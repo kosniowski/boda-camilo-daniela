@@ -88,12 +88,31 @@ const DEMO_GROUPS = [
 ];
 
 // ═══════════════════════════════════════════════════════
+//  NETWORK HELPER — timeout 10 s + 1 reintento automático
+// ═══════════════════════════════════════════════════════
+const fetchWithTimeout = async (url, opts = {}, timeoutMs = 10000, retries = 1) => {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...opts, signal: ctrl.signal });
+      clearTimeout(timer);
+      return res;
+    } catch (err) {
+      clearTimeout(timer);
+      if (attempt === retries) throw err;
+      await new Promise(r => setTimeout(r, 1200 * (attempt + 1)));
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════════
 //  API — con fallback a localStorage (modo demo)
 // ═══════════════════════════════════════════════════════
 const api = {
   async getGroups() {
     if (SCRIPT_URL) {
-      const r = await fetch(`${SCRIPT_URL}?action=getGroups`);
+      const r = await fetchWithTimeout(`${SCRIPT_URL}?action=getGroups`);
       return (await r.json()).groups || [];
     }
     const s = localStorage.getItem("wg_groups");
@@ -101,7 +120,7 @@ const api = {
   },
   async checkConfirmed(familyId) {
     if (SCRIPT_URL) {
-      const r = await fetch(`${SCRIPT_URL}?action=checkConfirmed&familyId=${familyId}`);
+      const r = await fetchWithTimeout(`${SCRIPT_URL}?action=checkConfirmed&familyId=${familyId}`);
       return (await r.json()).confirmed;
     }
     const c = JSON.parse(localStorage.getItem("wg_confirmations") || "[]");
@@ -109,7 +128,7 @@ const api = {
   },
   async saveConfirmation(data) {
     if (SCRIPT_URL) {
-      const r = await fetch(SCRIPT_URL, {
+      const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "confirm", ...data }),
         headers: { "Content-Type": "application/json" },
@@ -123,14 +142,14 @@ const api = {
   },
   async getConfirmations() {
     if (SCRIPT_URL) {
-      const r = await fetch(`${SCRIPT_URL}?action=getConfirmations`);
+      const r = await fetchWithTimeout(`${SCRIPT_URL}?action=getConfirmations`);
       return (await r.json()).confirmations || [];
     }
     return JSON.parse(localStorage.getItem("wg_confirmations") || "[]");
   },
   async uploadGroups(groups) {
     if (SCRIPT_URL) {
-      const r = await fetch(SCRIPT_URL, {
+      const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "uploadGroups", groups }),
         headers: { "Content-Type": "application/json" },
@@ -140,16 +159,16 @@ const api = {
     localStorage.setItem("wg_groups", JSON.stringify(groups));
     return { success: true };
   },
-  async resetGroups() {
+  async resetConfirmations() {
     if (SCRIPT_URL) {
-      const r = await fetch(SCRIPT_URL, {
+      const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "uploadGroups", groups: [] }),
+        body: JSON.stringify({ action: "resetConfirmations" }),
         headers: { "Content-Type": "application/json" },
       });
       return await r.json();
     }
-    localStorage.removeItem("wg_groups");
+    localStorage.removeItem("wg_confirmations");
     return { success: true };
   },
 };
@@ -488,11 +507,11 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
           color: "rgba(240,235,224,.75)", marginTop: 10, lineHeight: 1.6,
-        }}>• Ceremony: {WEDDING.venue} — {WEDDING.address}</p>
+        }}>• Ceremonia: {WEDDING.venue} — {WEDDING.address}</p>
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
           color: "rgba(240,235,224,.75)", marginTop: 4, lineHeight: 1.6,
-        }}>• Reception: {WEDDING.venueReception}</p>
+        }}>• Recepción: {WEDDING.venueReception}</p>
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
       </div>
 
@@ -506,7 +525,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       <div className="d5" style={{ marginTop: 14 }}>
         <p style={{ fontStyle: "italic", color: "rgba(240,235,224,.6)", fontSize: 16 }}>
           Confirma tu asistencia antes del{" "}
-          <span style={{ color: C.goldLight }}>1 de agosto de 2026</span>
+          <span style={{ color: C.goldLight }}>10 de agosto de 2026</span>
         </p>
       </div>
     </div>
@@ -515,7 +534,11 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
     <button onClick={onAdmin} className="gear-btn"
       style={{ position: "absolute", top: 18, right: 18, zIndex: 10 }}
       title="Administradores"
-    >⚙</button>
+    >
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+        <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.62.07-.96s-.03-.66-.07-1l2.16-1.69c.2-.15.25-.42.12-.64l-2.04-3.53c-.12-.22-.37-.3-.6-.22l-2.54 1.03c-.54-.41-1.1-.75-1.75-1.01l-.38-2.7A.49.49 0 0 0 14 2.87h-4a.49.49 0 0 0-.49.42l-.38 2.7c-.64.26-1.21.6-1.75 1.01L4.84 5.97c-.22-.08-.47 0-.6.22L2.2 9.72a.49.49 0 0 0 .12.64l2.16 1.69c-.04.34-.07.67-.07 1s.03.66.07 1L2.32 15.74a.49.49 0 0 0 .12.64l2.04 3.53c.12.22.37.3.6.22l2.54-1.03c.54.41 1.1.75 1.75 1.01l.38 2.7c.05.24.25.42.49.42h4c.24 0 .44-.18.49-.42l.38-2.7c.64-.26 1.21-.6 1.75-1.01l2.54 1.03c.22.08.47 0 .6-.22l2.04-3.53a.49.49 0 0 0-.12-.64l-2.16-1.69z"/>
+      </svg>
+    </button>
   </div>
 );
 
@@ -1015,9 +1038,9 @@ const AdminDashboard = ({ onLogout }) => {
 
   const handleReset = async () => {
     try {
-      await api.resetGroups();
-      setGroups([]);
-      setResetMsg("✓ Lista de invitados eliminada correctamente");
+      await api.resetConfirmations();
+      setConfirmations([]);
+      setResetMsg("✓ Confirmaciones eliminadas correctamente");
       setConfirmReset(false);
     } catch { setResetMsg("✗ Error al resetear. Intenta de nuevo."); }
   };
@@ -1432,8 +1455,8 @@ const AdminDashboard = ({ onLogout }) => {
                     color: C.error, marginBottom: 8, fontWeight: 600,
                   }}>⚠ Zona de Peligro</p>
                   <p style={{ fontSize: 15, color: C.text, marginBottom: 16, fontStyle: "italic" }}>
-                    Borra la lista de invitados cargada para empezar desde cero.
-                    Las confirmaciones existentes <strong>no</strong> se eliminan.
+                    Borra todas las confirmaciones registradas para empezar desde cero.
+                    La lista de invitados (Excel) <strong>no</strong> se elimina.
                   </p>
 
                   {resetMsg && (
@@ -1458,7 +1481,7 @@ const AdminDashboard = ({ onLogout }) => {
                       onMouseEnter={e => e.currentTarget.style.opacity = ".82"}
                       onMouseLeave={e => e.currentTarget.style.opacity = "1"}
                     >
-                      🗑 Resetear Lista de Invitados
+                      🗑 Resetear Confirmaciones
                     </button>
                   ) : (
                     <div>
