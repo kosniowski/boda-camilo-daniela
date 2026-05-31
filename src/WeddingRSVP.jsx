@@ -41,8 +41,8 @@ const C = {
   muted:      "#8A7D6A",
   error:      "#B93A3A",
   success:    "#4A7C4E",
-  bgGreen:    "#182810",
-  bgGreenMid: "#243D14",
+  bgGreen:    "#243518",
+  bgGreenMid: "#2F4520",
 };
 
 // ═══════════════════════════════════════════════════════
@@ -140,18 +140,28 @@ const api = {
     localStorage.setItem("wg_groups", JSON.stringify(groups));
     return { success: true };
   },
+  async resetGroups() {
+    if (SCRIPT_URL) {
+      const r = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "uploadGroups", groups: [] }),
+        headers: { "Content-Type": "application/json" },
+      });
+      return await r.json();
+    }
+    localStorage.removeItem("wg_groups");
+    return { success: true };
+  },
 };
 
 // ═══════════════════════════════════════════════════════
 //  WHATSAPP HELPER
 // ═══════════════════════════════════════════════════════
 const buildWAUrl = (phone, familyName, guests) => {
-  // Normalizar número para wa.me (necesita código de país completo, sin +)
   let num = phone.replace(/\D/g, "");
-  if (num.startsWith("0057"))      num = num.slice(4);       // 005730... → 30...
+  if (num.startsWith("0057"))      num = num.slice(4);
   else if (num.startsWith("57") && num.length === 12) { /* ya correcto */ }
-  else if (num.startsWith("3") && num.length === 10) num = "57" + num; // 300... → 57300...
-  // Otros formatos: se usa tal cual
+  else if (num.startsWith("3") && num.length === 10) num = "57" + num;
   const msg =
     `🌿 *¡Asistencia Confirmada!* 🌿\n\n` +
     `✅ *${familyName}* confirmó su asistencia a la boda de\n` +
@@ -335,20 +345,19 @@ const GlobalStyles = () => (
 
     /* ── Gear button ── */
     .gear-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(0,0,0,.25);
-      border: 1.5px solid rgba(255,255,255,.18);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: white;
+      border: none;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 18px;
+      cursor: pointer; font-size: 24px;
       transition: all .3s cubic-bezier(.34,1.56,.64,1);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 2px 12px rgba(0,0,0,.2);
+      box-shadow: 0 2px 16px rgba(0,0,0,.3);
+      color: #5C6B2E;
     }
     .gear-btn:hover {
-      background: rgba(0,0,0,.4);
-      border-color: rgba(255,255,255,.35);
+      background: #f0f4e8;
       transform: scale(1.12) rotate(30deg);
-      box-shadow: 0 6px 20px rgba(0,0,0,.3);
+      box-shadow: 0 6px 24px rgba(0,0,0,.35);
     }
 
     ::-webkit-scrollbar { width: 5px; }
@@ -416,13 +425,13 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <span style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 4, textTransform: "uppercase",
-          background: `rgba(255,255,255,.07)`,
-          color: C.goldLight, fontWeight: 600,
+          background: "white",
+          color: C.olive, fontWeight: 600,
           padding: "7px 20px", borderRadius: 50,
           display: "inline-block",
-          border: `1px solid rgba(212,174,92,.35)`,
+          border: `1px solid rgba(92,107,46,.25)`,
           boxShadow: "0 2px 16px rgba(0,0,0,.25)",
-        }}>✦ Save the Date ✦</span>
+        }}>✦ Nuestra Boda ✦</span>
       </div>
 
       {/* Monogram / symbol */}
@@ -474,16 +483,16 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
           color: "rgba(240,235,224,.6)", marginTop: 20,
         }}>{WEDDING.date}</p>
         <p style={{ fontSize: 20, fontStyle: "italic", color: C.cream, marginTop: 5 }}>
-          {WEDDING.time} · {WEDDING.venue}
+          {WEDDING.time}
         </p>
         <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
-          color: "rgba(240,235,224,.55)", marginTop: 4,
-        }}>{WEDDING.address}</p>
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
+          color: "rgba(240,235,224,.75)", marginTop: 10, lineHeight: 1.6,
+        }}>• Ceremony: {WEDDING.venue} — {WEDDING.address}</p>
         <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
-          fontStyle: "italic", color: "rgba(240,235,224,.45)", marginTop: 3,
-        }}>Recepción: {WEDDING.venueReception}</p>
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
+          color: "rgba(240,235,224,.75)", marginTop: 4, lineHeight: 1.6,
+        }}>• Reception: {WEDDING.venueReception}</p>
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
       </div>
 
@@ -957,6 +966,8 @@ const AdminDashboard = ({ onLogout }) => {
   const [tab,           setTab]           = useState("overview");
   const [uploadMsg,     setUploadMsg]     = useState("");
   const [searchAdmin,   setSearchAdmin]   = useState("");
+  const [confirmReset,  setConfirmReset]  = useState(false);
+  const [resetMsg,      setResetMsg]      = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -1000,6 +1011,15 @@ const AdminDashboard = ({ onLogout }) => {
       } catch { setUploadMsg("✗ Error al procesar el archivo"); }
     };
     reader.readAsArrayBuffer(file);
+  };
+
+  const handleReset = async () => {
+    try {
+      await api.resetGroups();
+      setGroups([]);
+      setResetMsg("✓ Lista de invitados eliminada correctamente");
+      setConfirmReset(false);
+    } catch { setResetMsg("✗ Error al resetear. Intenta de nuevo."); }
   };
 
   // Stats
@@ -1239,6 +1259,7 @@ const AdminDashboard = ({ onLogout }) => {
                     </div>
                   )}
                 </div>
+
               </div>
             )}
 
@@ -1396,6 +1417,82 @@ const AdminDashboard = ({ onLogout }) => {
                     <p style={{ fontSize: 13, color: C.success, marginTop: 16, fontFamily: "Lovelace, Georgia, serif" }}>
                       ✓ {groups.length} grupos cargados actualmente en el sistema
                     </p>
+                  )}
+                </div>
+
+                {/* ── Zona de Peligro ── */}
+                <div style={{
+                  marginTop: 24, maxWidth: 580,
+                  border: "1.5px solid #FFCDD2",
+                  borderRadius: 4, padding: 24,
+                  background: "#FFF8F8",
+                }}>
+                  <p style={{
+                    fontSize: 10, letterSpacing: 2.5, textTransform: "uppercase",
+                    color: C.error, marginBottom: 8, fontWeight: 600,
+                  }}>⚠ Zona de Peligro</p>
+                  <p style={{ fontSize: 15, color: C.text, marginBottom: 16, fontStyle: "italic" }}>
+                    Borra la lista de invitados cargada para empezar desde cero.
+                    Las confirmaciones existentes <strong>no</strong> se eliminan.
+                  </p>
+
+                  {resetMsg && (
+                    <div style={{
+                      padding: "10px 14px", borderRadius: 2, marginBottom: 14,
+                      background: resetMsg.startsWith("✓") ? "#E8F5E9" : "#FFEBEE",
+                      color: resetMsg.startsWith("✓") ? C.success : C.error,
+                      fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
+                    }}>{resetMsg}</div>
+                  )}
+
+                  {!confirmReset ? (
+                    <button
+                      onClick={() => { setConfirmReset(true); setResetMsg(""); }}
+                      style={{
+                        padding: "10px 22px", border: "none", borderRadius: 2,
+                        background: C.error, color: "white", cursor: "pointer",
+                        fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+                        letterSpacing: 2, textTransform: "uppercase",
+                        transition: "opacity .2s",
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.opacity = ".82"}
+                      onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+                    >
+                      🗑 Resetear Lista de Invitados
+                    </button>
+                  ) : (
+                    <div>
+                      <p style={{
+                        fontSize: 14, color: C.error, marginBottom: 14, fontWeight: 600,
+                      }}>
+                        ¿Estás seguro? Esta acción no se puede deshacer.
+                      </p>
+                      <div style={{ display: "flex", gap: 10 }}>
+                        <button
+                          onClick={handleReset}
+                          style={{
+                            padding: "10px 22px", border: "none", borderRadius: 2,
+                            background: C.error, color: "white", cursor: "pointer",
+                            fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+                            letterSpacing: 2, textTransform: "uppercase",
+                          }}
+                        >
+                          Sí, borrar todo
+                        </button>
+                        <button
+                          onClick={() => setConfirmReset(false)}
+                          style={{
+                            padding: "10px 22px", borderRadius: 2,
+                            border: `1px solid ${C.oliveFog}`, background: "white",
+                            cursor: "pointer", fontFamily: "Lovelace, Georgia, serif",
+                            fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
+                            color: C.muted,
+                          }}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
