@@ -429,8 +429,9 @@ const SplashPage = ({ onDone }) => {
         </h1>
         <p style={{
           fontFamily: "Lovelace, Georgia, serif",
-          fontSize: 18, letterSpacing: 6, color: C.goldLight,
-          margin: "10px 0",
+          fontSize: "clamp(42px, 9vw, 68px)", fontStyle: "italic",
+          color: C.goldLight, lineHeight: 1,
+          margin: "6px 0",
         }}>&amp;</p>
         <h1 style={{
           fontFamily: "Lovelace, Georgia, serif",
