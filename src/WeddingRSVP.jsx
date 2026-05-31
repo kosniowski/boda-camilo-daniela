@@ -248,6 +248,15 @@ const GlobalStyles = () => (
       to   { transform: rotate(360deg); }
     }
 
+    @keyframes kenBurns {
+      from { transform: scale(1);    }
+      to   { transform: scale(1.09); }
+    }
+    @keyframes splashFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
     .d1  { animation: fadeUp .8s ease .1s both; }
     .d2  { animation: fadeUp .8s ease .3s both; }
     .d3  { animation: fadeUp .8s ease .5s both; }
@@ -351,6 +360,113 @@ const GlobalStyles = () => (
     }
   `}</style>
 );
+
+// ═══════════════════════════════════════════════════════
+//  SPLASH PAGE
+// ═══════════════════════════════════════════════════════
+const SplashPage = ({ onDone }) => {
+  const [fading, setFading] = useState(false);
+
+  const advance = () => {
+    if (fading) return;
+    setFading(true);
+    setTimeout(onDone, 700);
+  };
+
+  useEffect(() => {
+    const t = setTimeout(advance, 5000);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div
+      onClick={advance}
+      style={{
+        position: "fixed", inset: 0, zIndex: 200, cursor: "pointer",
+        opacity: fading ? 0 : 1,
+        transition: "opacity .7s ease",
+        overflow: "hidden",
+      }}
+    >
+      {/* Foto con Ken Burns */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "url(/foto-portada.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center 25%",
+        animation: "kenBurns 6s ease-out forwards",
+        willChange: "transform",
+      }} />
+
+      {/* Overlay degradado */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to bottom, rgba(0,0,0,.08) 0%, rgba(0,0,0,.55) 100%)",
+      }} />
+
+      {/* Contenido centrado */}
+      <div style={{
+        position: "relative", zIndex: 1,
+        height: "100%", display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "40px 24px", textAlign: "center",
+        animation: "splashFadeIn 1.2s ease .4s both",
+      }}>
+        <p style={{
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+          letterSpacing: 5, textTransform: "uppercase",
+          color: "rgba(255,255,255,.75)", marginBottom: 24,
+        }}>¡Nos casamos!</p>
+
+        <h1 style={{
+          fontFamily: "Lovelace, Georgia, serif",
+          fontSize: "clamp(52px, 13vw, 92px)",
+          fontWeight: 400, fontStyle: "italic",
+          color: "white", lineHeight: 1.05,
+          textShadow: "0 2px 32px rgba(0,0,0,.4)",
+        }}>
+          {WEDDING.bride}
+        </h1>
+        <p style={{
+          fontFamily: "Lovelace, Georgia, serif",
+          fontSize: 18, letterSpacing: 6, color: C.goldLight,
+          margin: "10px 0",
+        }}>&amp;</p>
+        <h1 style={{
+          fontFamily: "Lovelace, Georgia, serif",
+          fontSize: "clamp(52px, 13vw, 92px)",
+          fontWeight: 400, fontStyle: "italic",
+          color: "white", lineHeight: 1.05,
+          textShadow: "0 2px 32px rgba(0,0,0,.4)",
+        }}>
+          {WEDDING.groom}
+        </h1>
+
+        <div style={{
+          width: 60, height: 1.5,
+          background: `linear-gradient(90deg, transparent, ${C.goldLight}, transparent)`,
+          margin: "26px auto",
+        }} />
+
+        <p style={{
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
+          letterSpacing: 4, textTransform: "uppercase",
+          color: "rgba(255,255,255,.8)",
+        }}>{WEDDING.date}</p>
+      </div>
+
+      {/* Hint inferior */}
+      <p style={{
+        position: "absolute", bottom: 28, left: 0, right: 0,
+        textAlign: "center", zIndex: 1,
+        fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+        letterSpacing: 3, textTransform: "uppercase",
+        color: "rgba(255,255,255,.45)",
+        animation: "splashFadeIn 1s ease 1.8s both",
+      }}>Toca para ver la invitación</p>
+    </div>
+  );
+};
 
 // ═══════════════════════════════════════════════════════
 //  COUNTDOWN
@@ -1617,14 +1733,15 @@ const AdminDashboard = ({ onLogout }) => {
 //  MAIN APP
 // ═══════════════════════════════════════════════════════
 export default function WeddingRSVP() {
-  const [page, setPage] = useState("landing");
+  const [page, setPage] = useState("splash");
 
   return (
     <>
       <GlobalStyles />
-      {page === "landing"     && <LandingPage onRSVP={() => setPage("rsvp")} onAdmin={() => setPage("admin-login")} />}
-      {page === "rsvp"        && <RSVPPage    onBack={() => setPage("landing")} />}
-      {page === "admin-login" && <AdminLogin  onLogin={() => setPage("admin")} onBack={() => setPage("landing")} />}
+      {page === "splash"      && <SplashPage   onDone={() => setPage("landing")} />}
+      {page === "landing"     && <LandingPage  onRSVP={() => setPage("rsvp")} onAdmin={() => setPage("admin-login")} />}
+      {page === "rsvp"        && <RSVPPage     onBack={() => setPage("landing")} />}
+      {page === "admin-login" && <AdminLogin   onLogin={() => setPage("admin")} onBack={() => setPage("landing")} />}
       {page === "admin"       && <AdminDashboard onLogout={() => setPage("landing")} />}
     </>
   );
