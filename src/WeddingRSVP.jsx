@@ -398,7 +398,7 @@ const GlobalStyles = () => (
 // ═══════════════════════════════════════════════════════
 const WEDDING_DATE = new Date("2026-08-22T11:30:00-05:00");
 
-const Countdown = () => {
+const Countdown = ({ light = false }) => {
   const calc = () => {
     const diff = Math.max(0, WEDDING_DATE - Date.now());
     return {
@@ -414,30 +414,33 @@ const Countdown = () => {
     return () => clearInterval(id);
   }, []);
 
+  const numColor   = light ? C.olive   : C.cream;
+  const labelColor = light ? C.oliveMid : C.goldLight;
+  const boxBg      = light ? "rgba(255,255,255,.65)" : "rgba(255,255,255,.08)";
+  const boxBorder  = light ? "1px solid rgba(92,107,46,.18)" : "1px solid rgba(212,174,92,.28)";
+
   return (
-    <div style={{ display: "flex", gap: 10, justifyContent: "center", margin: "22px 0 8px" }}>
+    <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
       {[
         { val: left.days,    label: "días"     },
         { val: left.hours,   label: "horas"    },
         { val: left.minutes, label: "minutos"  },
-        { val: left.seconds, label: "segundos" },
+        { val: left.seconds, label: "seg"      },
       ].map(({ val, label }) => (
         <div key={label} style={{
-          textAlign: "center", minWidth: 56,
-          background: "rgba(255,255,255,.08)",
-          borderRadius: 14, padding: "10px 8px",
-          border: `1px solid rgba(212,174,92,.28)`,
-          backdropFilter: "blur(6px)",
+          textAlign: "center", minWidth: 52,
+          background: boxBg, borderRadius: 12, padding: "8px 6px",
+          border: boxBorder,
         }}>
           <p style={{
             fontFamily: "Lovelace, Georgia, serif",
-            fontSize: "clamp(24px, 5vw, 34px)",
-            color: C.cream, lineHeight: 1, fontWeight: 400,
+            fontSize: "clamp(22px, 5vw, 30px)",
+            color: numColor, lineHeight: 1, fontWeight: 400,
           }}>{String(val).padStart(2, "0")}</p>
           <p style={{
             fontFamily: "Lovelace, Georgia, serif",
             fontSize: 8, letterSpacing: 2, textTransform: "uppercase",
-            color: C.goldLight, marginTop: 5,
+            color: labelColor, marginTop: 4,
           }}>{label}</p>
         </div>
       ))}
@@ -558,31 +561,26 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <p style={{ fontSize: 20, fontStyle: "italic", color: C.cream, marginTop: 5 }}>
           {WEDDING.time}
         </p>
-        <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
-          color: "rgba(240,235,224,.75)", marginTop: 10, lineHeight: 1.6,
-        }}>
-          •{" "}
-          <a href={WEDDING.mapsChurch} target="_blank" rel="noopener noreferrer"
-            style={{ color: "inherit", textDecoration: "underline", textDecorationColor: "rgba(212,174,92,.5)", textUnderlineOffset: 3 }}>
-            Ceremonia: {WEDDING.venue} — {WEDDING.address} 📍
-          </a>
-        </p>
-        <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
-          color: "rgba(240,235,224,.75)", marginTop: 4, lineHeight: 1.6,
-        }}>
-          •{" "}
-          <a href={WEDDING.mapsReception} target="_blank" rel="noopener noreferrer"
-            style={{ color: "inherit", textDecoration: "underline", textDecorationColor: "rgba(212,174,92,.5)", textUnderlineOffset: 3 }}>
-            Recepción: {WEDDING.venueReception} 📍
-          </a>
-        </p>
+        {[
+          { label: "Ceremonia", name: WEDDING.venue, sub: WEDDING.address, href: WEDDING.mapsChurch },
+          { label: "Recepción", name: WEDDING.venueReception, sub: null,               href: WEDDING.mapsReception },
+        ].map(({ label, name, sub, href }) => (
+          <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}>
+            <p style={{
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
+              color: "rgba(240,235,224,.75)", lineHeight: 1.5,
+            }}>• {label}: {name}{sub ? ` — ${sub}` : ""}</p>
+            <a href={href} target="_blank" rel="noopener noreferrer" style={{
+              display: "inline-flex", alignItems: "center", gap: 4,
+              background: "rgba(212,174,92,.18)", color: C.goldLight,
+              padding: "3px 11px", borderRadius: 50, fontSize: 11,
+              textDecoration: "none", border: "1px solid rgba(212,174,92,.4)",
+              whiteSpace: "nowrap", letterSpacing: 1,
+            }}>📍 Cómo llegar</a>
+          </div>
+        ))}
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
       </div>
-
-      {/* Countdown */}
-      <div className="d5"><Countdown /></div>
 
       {/* CTA */}
       <div className="d5">
@@ -926,6 +924,21 @@ const RSVPPage = ({ onBack }) => {
               ¡Los esperamos con mucho amor!
             </p>
 
+            {/* Countdown */}
+            <div style={{
+              margin: "18px 0 4px",
+              padding: "16px 18px",
+              background: `linear-gradient(135deg, ${C.olivePale}, #e5efcc)`,
+              borderRadius: 18, border: `1px solid rgba(92,107,46,.15)`,
+            }}>
+              <p style={{
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 10,
+                letterSpacing: 3, textTransform: "uppercase",
+                color: C.olive, marginBottom: 12, fontWeight: 600,
+              }}>⏳ Faltan…</p>
+              <Countdown light />
+            </div>
+
             {/* Detail card */}
             <div style={{
               margin: "22px 0",
@@ -1079,6 +1092,24 @@ const AdminDashboard = ({ onLogout }) => {
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
+
+  const handleExportExcel = () => {
+    const data = confirmations.map((c, i) => ({
+      "#":        i + 1,
+      "Familia":  c.familyName  || "",
+      "Personas": c.guestCount  || 0,
+      "Teléfono": c.phone       || "",
+      "Correo":   c.email       || "",
+      "Fecha":    c.timestamp
+        ? new Date(c.timestamp).toLocaleDateString("es-CO", { day: "2-digit", month: "short", year: "numeric" })
+        : "",
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    ws["!cols"] = [{ wch: 4 }, { wch: 28 }, { wch: 10 }, { wch: 16 }, { wch: 28 }, { wch: 14 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Confirmaciones");
+    XLSX.writeFile(wb, `confirmaciones_boda_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
 
   const handleExcel = (e) => {
     const file = e.target.files[0];
@@ -1369,9 +1400,26 @@ const AdminDashboard = ({ onLogout }) => {
             {tab === "list" && (
               <div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
-                  <p style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: C.muted }}>
-                    {confirmations.length} confirmaciones
-                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <p style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: C.muted }}>
+                      {confirmations.length} confirmaciones
+                    </p>
+                    {confirmations.length > 0 && (
+                      <button onClick={handleExportExcel} style={{
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        background: C.olive, color: "white", border: "none",
+                        padding: "7px 16px", borderRadius: 2, cursor: "pointer",
+                        fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+                        letterSpacing: 2, textTransform: "uppercase",
+                        transition: "opacity .2s",
+                      }}
+                        onMouseEnter={e => e.currentTarget.style.opacity = ".82"}
+                        onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+                      >
+                        ⬇ Descargar Excel
+                      </button>
+                    )}
+                  </div>
                   <input
                     placeholder="Buscar familia, teléfono, correo..."
                     value={searchAdmin}
