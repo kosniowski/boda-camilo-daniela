@@ -9,7 +9,7 @@ import * as XLSX from "xlsx";
 // ═══════════════════════════════════════════════════════
 //  🌿 CONFIGURACIÓN — Actualiza estos valores
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNpjpZzIEhxO0H-xn-24BIZPRK8lb4gDzho_IBTcOi6y6fuVOD-FXF4ZR5-PRD4x1Iww/exec";
+const SCRIPT_URL = "/.netlify/functions/proxy";
 const SHEETS_URL = ""; // Pega aquí la URL de tu Google Sheets
 const ADMIN_PASSWORD = "CamiloDaniela2025";
 
