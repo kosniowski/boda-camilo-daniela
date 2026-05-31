@@ -17,29 +17,32 @@ const WEDDING = {
   groom: "Camilo",
   bride: "Daniela",
   date: "Sábado, 22 de Agosto de 2026",
-  time: "Por confirmar",
-  venue: "Por confirmar",
-  address: "Cali, Colombia",
-  dressCode: "Formal · Verde olivo y tonos tierra",
+  time: "11:30 AM",
+  venue: "Santuario Juan Pablo Segundo",
+  address: "Cra 93 # 45-58, Valle del Lili",
+  venueReception: "Parcelación Chorro de Plata, Pance",
+  dressCode: "Hombres: Guayabera · Mujeres: Vestido de cóctel (no blancos ni perlados)",
 };
 
 // ═══════════════════════════════════════════════════════
 //  PALETA
 // ═══════════════════════════════════════════════════════
 const C = {
-  olive:     "#5C6B2E",
-  oliveMid:  "#7A8E3E",
-  oliveLight:"#A3B86C",
-  olivePale: "#E8EDD8",
-  oliveFog:  "#D5DFBA",
-  cream:     "#F8F4EE",
-  gold:      "#B8933A",
-  goldLight: "#D4AE5C",
-  brown:     "#2A1A08",
-  text:      "#352B1A",
-  muted:     "#8A7D6A",
-  error:     "#B93A3A",
-  success:   "#4A7C4E",
+  olive:      "#5C6B2E",
+  oliveMid:   "#7A8E3E",
+  oliveLight: "#A3B86C",
+  olivePale:  "#E8EDD8",
+  oliveFog:   "#D5DFBA",
+  cream:      "#F8F4EE",
+  gold:       "#B8933A",
+  goldLight:  "#D4AE5C",
+  brown:      "#2A1A08",
+  text:       "#352B1A",
+  muted:      "#8A7D6A",
+  error:      "#B93A3A",
+  success:    "#4A7C4E",
+  bgGreen:    "#182810",
+  bgGreenMid: "#243D14",
 };
 
 // ═══════════════════════════════════════════════════════
@@ -47,41 +50,41 @@ const C = {
 // ═══════════════════════════════════════════════════════
 const DEMO_GROUPS = [
   // Mesa #1
-  { id: "1",  name: "Oswaldo",        maxGuests: 4 },
-  { id: "2",  name: "Manuel",         maxGuests: 3 },
-  { id: "3",  name: "Fernanda",       maxGuests: 1 },
-  { id: "4",  name: "Graciela",       maxGuests: 2 },
+  { id: "1",  name: "Oswaldo Díaz",            maxGuests: 4 },
+  { id: "2",  name: "Manuel Ramos",             maxGuests: 3 },
+  { id: "3",  name: "Fernanda Ramos",           maxGuests: 1 },
+  { id: "4",  name: "Graciela Ramos",           maxGuests: 2 },
   // Mesa #2
-  { id: "5",  name: "Martha",         maxGuests: 2 },
-  { id: "6",  name: "Lorena",         maxGuests: 2 },
-  { id: "7",  name: "Ángela",         maxGuests: 2 },
-  { id: "8",  name: "Genier",         maxGuests: 2 },
+  { id: "5",  name: "Martha Gonzalez",          maxGuests: 2 },
+  { id: "6",  name: "Lorena Ramos",             maxGuests: 2 },
+  { id: "7",  name: "Ángela Jimenez",           maxGuests: 5 },
+  { id: "8",  name: "Genier Díaz",              maxGuests: 2 },
   // Mesa #3
-  { id: "9",  name: "Charo",          maxGuests: 5 },
-  { id: "10", name: "María Eugenia",  maxGuests: 3 },
+  { id: "9",  name: "Maria del Rosario Ramos",  maxGuests: 5 },
+  { id: "10", name: "María Eugenia Ramos",       maxGuests: 3 },
   // Mesa #4
-  { id: "11", name: "Daniel Urrea",   maxGuests: 2 },
-  { id: "12", name: "Ana Gabriel",    maxGuests: 3 },
-  { id: "13", name: "Catalina Duque", maxGuests: 2 },
-  { id: "14", name: "José Luis",      maxGuests: 1 },
-  { id: "15", name: "Juliana",        maxGuests: 1 },
-  { id: "16", name: "Hugo",           maxGuests: 1 },
-  { id: "17", name: "Yorleiner",      maxGuests: 1 },
+  { id: "11", name: "Daniel Urrea",             maxGuests: 2 },
+  { id: "12", name: "Ana Gabriel Ramirez",      maxGuests: 3 },
+  { id: "13", name: "Catalina Duque",           maxGuests: 2 },
+  { id: "14", name: "José Luis Guzman",         maxGuests: 1 },
+  { id: "15", name: "Juliana Chavez",           maxGuests: 1 },
+  { id: "16", name: "Hugo Ochoa",               maxGuests: 1 },
+  { id: "17", name: "Yorleiner Navia",          maxGuests: 1 },
   // Mesa #5
-  { id: "18", name: "Diana",          maxGuests: 3 },
-  { id: "19", name: "Daniela",        maxGuests: 3 },
-  { id: "20", name: "Ledy",           maxGuests: 1 },
-  { id: "21", name: "Paola",          maxGuests: 1 },
-  { id: "22", name: "Yuliana",        maxGuests: 1 },
-  { id: "23", name: "Andres",         maxGuests: 1 },
-  { id: "24", name: "Olga",           maxGuests: 3 },
+  { id: "18", name: "Diana Córdoba",            maxGuests: 3 },
+  { id: "19", name: "Daniela Cortes",           maxGuests: 3 },
+  { id: "20", name: "Ledy",                     maxGuests: 1 },
+  { id: "21", name: "Paola",                    maxGuests: 1 },
+  { id: "22", name: "Yuliana",                  maxGuests: 1 },
+  { id: "23", name: "Andres",                   maxGuests: 1 },
+  { id: "24", name: "Olga",                     maxGuests: 3 },
   // Mesa #6
-  { id: "25", name: "Ruth",           maxGuests: 3 },
-  { id: "26", name: "Josecito",       maxGuests: 2 },
-  { id: "27", name: "Melchor",        maxGuests: 3 },
+  { id: "25", name: "Ruth",                     maxGuests: 3 },
+  { id: "26", name: "Josecito",                 maxGuests: 2 },
+  { id: "27", name: "Melchor",                  maxGuests: 3 },
   // Mesa #7
-  { id: "28", name: "Maricel",        maxGuests: 5 },
-  { id: "29", name: "Eduardo",        maxGuests: 2 },
+  { id: "28", name: "Maricel",                  maxGuests: 5 },
+  { id: "29", name: "Eduardo",                  maxGuests: 2 },
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -156,8 +159,8 @@ const buildWAUrl = (phone, familyName, guests) => {
     `👥 Personas: *${guests}*\n` +
     `📅 Fecha: ${WEDDING.date}\n` +
     `⏰ Hora: ${WEDDING.time}\n` +
-    `📍 Lugar: ${WEDDING.venue}\n` +
-    `🗺️ ${WEDDING.address}\n` +
+    `⛪ Ceremonia: ${WEDDING.venue} · ${WEDDING.address}\n` +
+    `🥂 Recepción: ${WEDDING.venueReception}\n` +
     `👗 Vestimenta: ${WEDDING.dressCode}\n\n` +
     `¡Los esperamos con mucho amor! 💚🌿`;
   return `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
@@ -231,8 +234,8 @@ const GlobalStyles = () => (
       50%      { transform: translateY(-10px) rotate(-2deg) scaleX(-1); }
     }
     @keyframes ringPulse {
-      0%,100% { box-shadow: 0 6px 28px rgba(92,107,46,.45), 0 0 0 0 rgba(92,107,46,.35); }
-      50%      { box-shadow: 0 6px 28px rgba(92,107,46,.45), 0 0 0 16px rgba(92,107,46,0);  }
+      0%,100% { box-shadow: 0 6px 28px rgba(184,147,58,.55), 0 0 0 0 rgba(184,147,58,.4); }
+      50%      { box-shadow: 0 6px 28px rgba(184,147,58,.55), 0 0 0 20px rgba(184,147,58,0); }
     }
     @keyframes slideCard {
       from { opacity: 0; transform: translateY(24px) scale(.97); }
@@ -271,9 +274,9 @@ const GlobalStyles = () => (
     .btn {
       display: inline-flex; align-items: center; justify-content: center;
       font-family: 'Lovelace', Georgia, serif; font-weight: 500; letter-spacing: 2px;
-      text-transform: uppercase; font-size: 12px; cursor: pointer;
+      text-transform: uppercase; font-size: 14px; cursor: pointer;
       border-radius: 50px; border: none; transition: all .3s cubic-bezier(.34,1.56,.64,1);
-      padding: 15px 40px; position: relative; overflow: hidden;
+      padding: 18px 52px; position: relative; overflow: hidden;
     }
     .btn::after {
       content: ''; position: absolute; inset: 0;
@@ -282,13 +285,13 @@ const GlobalStyles = () => (
     .btn:hover::after { background: rgba(255,255,255,.12); }
 
     .btn-g {
-      background: linear-gradient(135deg, ${C.olive} 0%, ${C.oliveMid} 60%, #8FA44E 100%);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(92,107,46,.35), 0 1px 4px rgba(92,107,46,.2);
+      background: linear-gradient(135deg, ${C.gold} 0%, ${C.goldLight} 60%, #E8C878 100%);
+      color: ${C.brown};
+      box-shadow: 0 4px 20px rgba(184,147,58,.4), 0 1px 4px rgba(184,147,58,.2);
     }
     .btn-g:hover:not(:disabled) {
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 32px rgba(92,107,46,.45), 0 2px 8px rgba(92,107,46,.25);
+      box-shadow: 0 10px 32px rgba(184,147,58,.55), 0 2px 8px rgba(184,147,58,.3);
     }
     .btn-g:active:not(:disabled) { transform: translateY(-1px) scale(.99); }
     .btn-g:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
@@ -333,19 +336,19 @@ const GlobalStyles = () => (
     /* ── Gear button ── */
     .gear-btn {
       width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,.7);
-      border: 1.5px solid ${C.oliveFog};
+      background: rgba(0,0,0,.25);
+      border: 1.5px solid rgba(255,255,255,.18);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; font-size: 18px;
       transition: all .3s cubic-bezier(.34,1.56,.64,1);
       backdrop-filter: blur(8px);
-      box-shadow: 0 2px 12px rgba(92,107,46,.12);
+      box-shadow: 0 2px 12px rgba(0,0,0,.2);
     }
     .gear-btn:hover {
-      background: ${C.olivePale};
-      border-color: ${C.olive};
+      background: rgba(0,0,0,.4);
+      border-color: rgba(255,255,255,.35);
       transform: scale(1.12) rotate(30deg);
-      box-shadow: 0 6px 20px rgba(92,107,46,.22);
+      box-shadow: 0 6px 20px rgba(0,0,0,.3);
     }
 
     ::-webkit-scrollbar { width: 5px; }
@@ -367,10 +370,10 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
   <div style={{
     minHeight: "100vh",
     background: `
-      radial-gradient(ellipse at 15% 85%, rgba(92,107,46,.18) 0%, transparent 50%),
-      radial-gradient(ellipse at 85% 10%, rgba(184,147,58,.12) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 50%, rgba(163,184,108,.08) 0%, transparent 70%),
-      ${C.cream}`,
+      radial-gradient(ellipse at 15% 85%, rgba(184,147,58,.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 10%, rgba(92,107,46,.40) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(24,40,16,.80) 0%, transparent 75%),
+      ${C.bgGreen}`,
     display: "flex", flexDirection: "column",
     alignItems: "center", justifyContent: "center",
     padding: "40px 24px", position: "relative", overflow: "hidden",
@@ -413,12 +416,12 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <span style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 4, textTransform: "uppercase",
-          background: `linear-gradient(135deg, ${C.olivePale}, #d8e6b0)`,
-          color: C.olive, fontWeight: 600,
+          background: `rgba(255,255,255,.07)`,
+          color: C.goldLight, fontWeight: 600,
           padding: "7px 20px", borderRadius: 50,
           display: "inline-block",
-          border: `1px solid rgba(92,107,46,.2)`,
-          boxShadow: "0 2px 12px rgba(92,107,46,.12)",
+          border: `1px solid rgba(212,174,92,.35)`,
+          boxShadow: "0 2px 16px rgba(0,0,0,.25)",
         }}>✦ Save the Date ✦</span>
       </div>
 
@@ -434,10 +437,10 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       <div className="d2" style={{ marginTop: 8 }}>
         <h1 style={{
           fontFamily: "Lovelace, Georgia, serif",
-          fontSize: "clamp(50px, 11vw, 84px)",
+          fontSize: "clamp(54px, 12vw, 88px)",
           fontWeight: 400, fontStyle: "italic",
-          color: C.olive, lineHeight: 1.05,
-          textShadow: `2px 4px 24px rgba(92,107,46,.12)`,
+          color: C.cream, lineHeight: 1.05,
+          textShadow: `2px 4px 32px rgba(0,0,0,.35)`,
         }}>
           {WEDDING.bride}
         </h1>
@@ -453,10 +456,10 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       <div className="d3">
         <h1 style={{
           fontFamily: "Lovelace, Georgia, serif",
-          fontSize: "clamp(50px, 11vw, 84px)",
+          fontSize: "clamp(54px, 12vw, 88px)",
           fontWeight: 400, fontStyle: "italic",
-          color: C.olive, lineHeight: 1.05,
-          textShadow: `2px 4px 24px rgba(92,107,46,.12)`,
+          color: C.cream, lineHeight: 1.05,
+          textShadow: `2px 4px 32px rgba(0,0,0,.35)`,
         }}>
           {WEDDING.groom}
         </h1>
@@ -466,31 +469,35 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       <div className="d4" style={{ margin: "28px 0" }}>
         <div className="gline" style={{ width: 80 }} />
         <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 12,
           letterSpacing: 4, textTransform: "uppercase",
-          color: C.muted, marginTop: 20,
+          color: "rgba(240,235,224,.6)", marginTop: 20,
         }}>{WEDDING.date}</p>
-        <p style={{ fontSize: 19, fontStyle: "italic", color: C.text, marginTop: 5 }}>
+        <p style={{ fontSize: 20, fontStyle: "italic", color: C.cream, marginTop: 5 }}>
           {WEDDING.time} · {WEDDING.venue}
         </p>
         <p style={{
-          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
-          letterSpacing: 2, color: C.muted, marginTop: 4,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
+          color: "rgba(240,235,224,.55)", marginTop: 4,
         }}>{WEDDING.address}</p>
+        <p style={{
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
+          fontStyle: "italic", color: "rgba(240,235,224,.45)", marginTop: 3,
+        }}>Recepción: {WEDDING.venueReception}</p>
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
       </div>
 
       {/* CTA */}
       <div className="d5">
         <button className="btn btn-g rp" onClick={onRSVP}
-          style={{ fontSize: 11, letterSpacing: 3, padding: "17px 52px" }}>
+          style={{ fontSize: 15, letterSpacing: 2, padding: "20px 68px" }}>
           Confirmar Asistencia
         </button>
       </div>
       <div className="d5" style={{ marginTop: 14 }}>
-        <p style={{ fontStyle: "italic", color: C.muted, fontSize: 15 }}>
+        <p style={{ fontStyle: "italic", color: "rgba(240,235,224,.6)", fontSize: 16 }}>
           Confirma tu asistencia antes del{" "}
-          <span style={{ color: C.olive }}>1 de agosto de 2026</span>
+          <span style={{ color: C.goldLight }}>1 de agosto de 2026</span>
         </p>
       </div>
     </div>
@@ -565,9 +572,9 @@ const RSVPPage = ({ onBack }) => {
     <div style={{
       minHeight: "100vh",
       background: `
-        radial-gradient(ellipse at 15% 90%, rgba(92,107,46,.15), transparent 50%),
-        radial-gradient(ellipse at 85% 5%, rgba(184,147,58,.10), transparent 45%),
-        ${C.cream}`,
+        radial-gradient(ellipse at 15% 90%, rgba(184,147,58,.18), transparent 50%),
+        radial-gradient(ellipse at 85% 5%, rgba(92,107,46,.35), transparent 45%),
+        ${C.bgGreen}`,
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: "24px 16px", position: "relative",
     }}>
@@ -691,7 +698,8 @@ const RSVPPage = ({ onBack }) => {
             }}>
               <p>📅 {WEDDING.date}</p>
               <p>⏰ {WEDDING.time}</p>
-              <p>📍 {WEDDING.venue} · {WEDDING.address}</p>
+              <p>⛪ {WEDDING.venue} · {WEDDING.address}</p>
+              <p>🥂 Recepción: {WEDDING.venueReception}</p>
             </div>
             <button className="btn btn-g" onClick={onBack} style={{ width: "100%", marginTop: 24 }}>
               Volver al Inicio
@@ -835,7 +843,8 @@ const RSVPPage = ({ onBack }) => {
                 ["👰🤵", `${WEDDING.bride} & ${WEDDING.groom}`],
                 ["📅",   WEDDING.date],
                 ["⏰",   WEDDING.time],
-                ["📍",   `${WEDDING.venue} · ${WEDDING.address}`],
+                ["⛪",   `${WEDDING.venue} · ${WEDDING.address}`],
+                ["🥂",   `Recepción: ${WEDDING.venueReception}`],
                 ["👗",   WEDDING.dressCode],
                 ["👥",   `${guests} persona${guests !== 1 ? "s" : ""} confirmada${guests !== 1 ? "s" : ""}`],
               ].map(([icon, txt]) => (
@@ -966,12 +975,25 @@ const AdminDashboard = ({ onLogout }) => {
       try {
         const wb = XLSX.read(ev.target.result, { type: "array" });
         const ws = wb.Sheets[wb.SheetNames[0]];
+        // header:1 → array of rows; each row is array of cells (one column per Mesa)
         const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        const parsed = rows.slice(1).filter(r => r[0] && r[1]).map((r, i) => ({
-          id: String(Date.now() + i),
-          name: String(r[0]).trim(),
-          maxGuests: parseInt(r[1]) || 2,
-        }));
+        const parsed = [];
+        let counter = 0;
+        // Skip first row (headers: Mesa #1, Mesa #2, ...)
+        rows.slice(1).forEach(row => {
+          if (!Array.isArray(row)) return;
+          row.forEach(cell => {
+            if (!cell) return;
+            const s = String(cell).trim();
+            if (!s) return;
+            const m = s.match(/^(.+?)\s*\((\d+)\)\s*$/);
+            parsed.push({
+              id: String(Date.now() + counter++),
+              name: m ? m[1].trim() : s,
+              maxGuests: m ? (parseInt(m[2]) || 1) : 2,
+            });
+          });
+        });
         await api.uploadGroups(parsed);
         setGroups(parsed);
         setUploadMsg(`✓ ${parsed.length} grupos cargados exitosamente`);
