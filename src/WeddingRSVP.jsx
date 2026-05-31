@@ -206,7 +206,7 @@ const GlobalStyles = () => (
 
     body {
       font-family: 'Lovelace', Georgia, serif;
-      background: ${C.cream};
+      background: url(/fondo.jpeg) center/cover fixed;
       color: ${C.text};
       min-height: 100vh;
     }
@@ -530,23 +530,19 @@ const Countdown = ({ light = false }) => {
 const LandingPage = ({ onRSVP, onAdmin }) => (
   <div style={{
     minHeight: "100vh",
-    background: `
-      radial-gradient(ellipse at 15% 85%, rgba(184,147,58,.18) 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 10%, rgba(92,107,46,.40) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(24,40,16,.80) 0%, transparent 75%),
-      ${C.bgGreen}`,
+    background: "url(/fondo.jpeg) center/cover",
     display: "flex", flexDirection: "column",
     alignItems: "center", justifyContent: "center",
     padding: "40px 24px", position: "relative", overflow: "hidden",
   }}>
     {/* Scattered bg leaves */}
     {[
-      { top: "8%",  left: "12%",  opacity: .12, rotate: 30 },
-      { top: "15%", right: "10%", opacity: .10, rotate: -45 },
-      { top: "75%", left: "8%",   opacity: .10, rotate: 60  },
-      { top: "80%", right: "14%", opacity: .12, rotate: -20 },
-      { top: "45%", left: "4%",   opacity: .08, rotate: 10  },
-      { top: "50%", right: "5%",  opacity: .08, rotate: -10 },
+      { top: "8%",  left: "12%",  opacity: .28, rotate: 30 },
+      { top: "15%", right: "10%", opacity: .22, rotate: -45 },
+      { top: "75%", left: "8%",   opacity: .22, rotate: 60  },
+      { top: "80%", right: "14%", opacity: .28, rotate: -20 },
+      { top: "45%", left: "4%",   opacity: .18, rotate: 10  },
+      { top: "50%", right: "5%",  opacity: .18, rotate: -10 },
     ].map((s, i) => (
       <div key={i} style={{ position: "absolute", ...s, transform: `rotate(${s.rotate}deg)` }}>
         <LeafScatter />
@@ -600,8 +596,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
           fontFamily: "Lovelace, Georgia, serif",
           fontSize: "clamp(54px, 12vw, 88px)",
           fontWeight: 400, fontStyle: "italic",
-          color: C.cream, lineHeight: 1.05,
-          textShadow: `2px 4px 32px rgba(0,0,0,.35)`,
+          color: C.olive, lineHeight: 1.05,
         }}>
           {WEDDING.bride}
         </h1>
@@ -619,8 +614,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
           fontFamily: "Lovelace, Georgia, serif",
           fontSize: "clamp(54px, 12vw, 88px)",
           fontWeight: 400, fontStyle: "italic",
-          color: C.cream, lineHeight: 1.05,
-          textShadow: `2px 4px 32px rgba(0,0,0,.35)`,
+          color: C.olive, lineHeight: 1.05,
         }}>
           {WEDDING.groom}
         </h1>
@@ -632,9 +626,9 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 12,
           letterSpacing: 4, textTransform: "uppercase",
-          color: "rgba(240,235,224,.6)", marginTop: 20,
+          color: C.muted, marginTop: 20,
         }}>{WEDDING.date}</p>
-        <p style={{ fontSize: 20, fontStyle: "italic", color: C.cream, marginTop: 5 }}>
+        <p style={{ fontSize: 20, fontStyle: "italic", color: C.text, marginTop: 5 }}>
           {WEDDING.time}
         </p>
         {[
@@ -644,13 +638,13 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}>
             <p style={{
               fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
-              color: "rgba(240,235,224,.75)", lineHeight: 1.5,
+              color: C.text, lineHeight: 1.5,
             }}>• {label}: {name}{sub ? ` — ${sub}` : ""}</p>
             <a href={href} target="_blank" rel="noopener noreferrer" style={{
               display: "inline-flex", alignItems: "center", gap: 4,
-              background: "rgba(212,174,92,.18)", color: C.goldLight,
+              background: "rgba(92,107,46,.12)", color: C.olive,
               padding: "3px 11px", borderRadius: 50, fontSize: 11,
-              textDecoration: "none", border: "1px solid rgba(212,174,92,.4)",
+              textDecoration: "none", border: `1px solid rgba(92,107,46,.35)`,
               whiteSpace: "nowrap", letterSpacing: 1,
             }}>📍 Cómo llegar</a>
           </div>
@@ -666,7 +660,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         </button>
       </div>
       <div className="d5" style={{ marginTop: 14 }}>
-        <p style={{ fontStyle: "italic", color: "rgba(240,235,224,.6)", fontSize: 16 }}>
+        <p style={{ fontStyle: "italic", color: C.muted, fontSize: 16 }}>
           Confirma tu asistencia antes del{" "}
           <span style={{ color: C.goldLight }}>10 de agosto de 2026</span>
         </p>
@@ -746,10 +740,7 @@ const RSVPPage = ({ onBack }) => {
   return (
     <div style={{
       minHeight: "100vh",
-      background: `
-        radial-gradient(ellipse at 15% 90%, rgba(184,147,58,.18), transparent 50%),
-        radial-gradient(ellipse at 85% 5%, rgba(92,107,46,.35), transparent 45%),
-        ${C.bgGreen}`,
+      background: "url(/fondo.jpeg) center/cover",
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: "24px 16px", position: "relative",
     }}>
@@ -1090,10 +1081,7 @@ const AdminLogin = ({ onLogin, onBack }) => {
   return (
     <div style={{
       minHeight: "100vh",
-      background: `
-        radial-gradient(ellipse at 15% 90%, rgba(184,147,58,.18), transparent 50%),
-        radial-gradient(ellipse at 85% 5%, rgba(92,107,46,.35), transparent 45%),
-        ${C.bgGreen}`,
+      background: "url(/fondo.jpeg) center/cover",
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: 20, position: "relative", overflow: "hidden",
     }}>
