@@ -1147,12 +1147,18 @@ const AdminDashboard = ({ onLogout }) => {
   const [searchAdmin,   setSearchAdmin]   = useState("");
   const [confirmReset,  setConfirmReset]  = useState(false);
   const [resetMsg,      setResetMsg]      = useState("");
+  const [loadError,     setLoadError]     = useState("");
 
   const load = async () => {
     setLoading(true);
-    const [c, g] = await Promise.all([api.getConfirmations(), api.getGroups()]);
-    setConfirmations(c);
-    setGroups(g);
+    setLoadError("");
+    try {
+      const [c, g] = await Promise.all([api.getConfirmations(), api.getGroups()]);
+      setConfirmations(c);
+      setGroups(g);
+    } catch (err) {
+      setLoadError("No se pudo conectar con Google Sheets. Verifica que el SPREADSHEET_ID esté configurado en el Apps Script y vuelve a intentarlo.");
+    }
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
@@ -1322,10 +1328,22 @@ const AdminDashboard = ({ onLogout }) => {
       <div style={{ padding: "24px 20px", maxWidth: 1080, margin: "0 auto" }}>
         {loading ? (
           <div style={{ textAlign: "center", padding: 80 }}>
-            <p style={{
-              fontFamily: "Lovelace, Georgia, serif",
-              fontStyle: "italic", fontSize: 20, color: C.muted,
-            }}>Cargando datos...</p>
+            <p style={{ fontFamily: "Lovelace, Georgia, serif", fontStyle: "italic", fontSize: 20, color: C.muted }}>
+              Cargando datos...
+            </p>
+          </div>
+        ) : loadError ? (
+          <div style={{ textAlign: "center", padding: 60, maxWidth: 520, margin: "0 auto" }}>
+            <p style={{ fontSize: 32, marginBottom: 16 }}>⚠️</p>
+            <p style={{ fontFamily: "Lovelace, Georgia, serif", fontSize: 17, color: C.error, marginBottom: 20 }}>
+              {loadError}
+            </p>
+            <button onClick={load} style={{
+              background: C.olive, color: "white", border: "none",
+              padding: "10px 28px", borderRadius: 2, cursor: "pointer",
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 12,
+              letterSpacing: 2, textTransform: "uppercase",
+            }}>↻ Reintentar</button>
           </div>
         ) : (
           <>
