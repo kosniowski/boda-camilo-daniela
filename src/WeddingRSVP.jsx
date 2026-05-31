@@ -22,6 +22,8 @@ const WEDDING = {
   address: "Cra 93 # 45-58, Valle del Lili",
   venueReception: "Parcelación Chorro de Plata, Pance",
   dressCode: "Hombres: Guayabera · Mujeres: Vestido de cóctel (no blancos ni perlados)",
+  mapsChurch:     "https://maps.google.com/?q=Santuario+Juan+Pablo+Segundo+Cra+93+45+58+Valle+del+Lili+Cali",
+  mapsReception:  "https://maps.google.com/?q=Parcelacion+Chorro+de+Plata+Pance+Cali",
 };
 
 // ═══════════════════════════════════════════════════════
@@ -41,8 +43,8 @@ const C = {
   muted:      "#8A7D6A",
   error:      "#B93A3A",
   success:    "#4A7C4E",
-  bgGreen:    "#243518",
-  bgGreenMid: "#2F4520",
+  bgGreen:    "#304823",
+  bgGreenMid: "#3A5629",
 };
 
 // ═══════════════════════════════════════════════════════
@@ -392,6 +394,58 @@ const GlobalStyles = () => (
 );
 
 // ═══════════════════════════════════════════════════════
+//  COUNTDOWN
+// ═══════════════════════════════════════════════════════
+const WEDDING_DATE = new Date("2026-08-22T11:30:00-05:00");
+
+const Countdown = () => {
+  const calc = () => {
+    const diff = Math.max(0, WEDDING_DATE - Date.now());
+    return {
+      days:    Math.floor(diff / 86400000),
+      hours:   Math.floor((diff % 86400000) / 3600000),
+      minutes: Math.floor((diff % 3600000)  / 60000),
+      seconds: Math.floor((diff % 60000)    / 1000),
+    };
+  };
+  const [left, setLeft] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setLeft(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div style={{ display: "flex", gap: 10, justifyContent: "center", margin: "22px 0 8px" }}>
+      {[
+        { val: left.days,    label: "días"     },
+        { val: left.hours,   label: "horas"    },
+        { val: left.minutes, label: "minutos"  },
+        { val: left.seconds, label: "segundos" },
+      ].map(({ val, label }) => (
+        <div key={label} style={{
+          textAlign: "center", minWidth: 56,
+          background: "rgba(255,255,255,.08)",
+          borderRadius: 14, padding: "10px 8px",
+          border: `1px solid rgba(212,174,92,.28)`,
+          backdropFilter: "blur(6px)",
+        }}>
+          <p style={{
+            fontFamily: "Lovelace, Georgia, serif",
+            fontSize: "clamp(24px, 5vw, 34px)",
+            color: C.cream, lineHeight: 1, fontWeight: 400,
+          }}>{String(val).padStart(2, "0")}</p>
+          <p style={{
+            fontFamily: "Lovelace, Georgia, serif",
+            fontSize: 8, letterSpacing: 2, textTransform: "uppercase",
+            color: C.goldLight, marginTop: 5,
+          }}>{label}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════
 //  LANDING PAGE
 // ═══════════════════════════════════════════════════════
 const LandingPage = ({ onRSVP, onAdmin }) => (
@@ -507,13 +561,28 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
           color: "rgba(240,235,224,.75)", marginTop: 10, lineHeight: 1.6,
-        }}>• Ceremonia: {WEDDING.venue} — {WEDDING.address}</p>
+        }}>
+          •{" "}
+          <a href={WEDDING.mapsChurch} target="_blank" rel="noopener noreferrer"
+            style={{ color: "inherit", textDecoration: "underline", textDecorationColor: "rgba(212,174,92,.5)", textUnderlineOffset: 3 }}>
+            Ceremonia: {WEDDING.venue} — {WEDDING.address} 📍
+          </a>
+        </p>
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
           color: "rgba(240,235,224,.75)", marginTop: 4, lineHeight: 1.6,
-        }}>• Recepción: {WEDDING.venueReception}</p>
+        }}>
+          •{" "}
+          <a href={WEDDING.mapsReception} target="_blank" rel="noopener noreferrer"
+            style={{ color: "inherit", textDecoration: "underline", textDecorationColor: "rgba(212,174,92,.5)", textUnderlineOffset: 3 }}>
+            Recepción: {WEDDING.venueReception} 📍
+          </a>
+        </p>
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
       </div>
+
+      {/* Countdown */}
+      <div className="d5"><Countdown /></div>
 
       {/* CTA */}
       <div className="d5">
@@ -932,15 +1001,25 @@ const AdminLogin = ({ onLogin, onBack }) => {
   return (
     <div style={{
       minHeight: "100vh",
-      background: C.brown,
+      background: `
+        radial-gradient(ellipse at 15% 90%, rgba(184,147,58,.18), transparent 50%),
+        radial-gradient(ellipse at 85% 5%, rgba(92,107,46,.35), transparent 45%),
+        ${C.bgGreen}`,
       display: "flex", alignItems: "center", justifyContent: "center",
-      padding: 20,
+      padding: 20, position: "relative", overflow: "hidden",
     }}>
+      <div style={{ position: "absolute", left: 0, bottom: 0, opacity: .2 }}>
+        <EucalyptusBranch w={80} h={300} />
+      </div>
+      <div style={{ position: "absolute", right: 0, top: 30, opacity: .2 }}>
+        <EucalyptusBranch w={72} h={260} flip />
+      </div>
       <div className="sc" style={{
-        background: "white", borderRadius: 28,
-        boxShadow: "0 24px 64px rgba(0,0,0,.45)",
+        background: "rgba(255,255,255,.97)", borderRadius: 28,
+        boxShadow: "0 24px 64px rgba(0,0,0,.35)",
         width: "100%", maxWidth: 380, padding: "44px 36px",
         textAlign: "center", border: `1px solid rgba(184,147,58,.2)`,
+        position: "relative", zIndex: 1,
       }}>
         <p style={{
           fontFamily: "Lovelace, Georgia, serif", fontSize: 10,
