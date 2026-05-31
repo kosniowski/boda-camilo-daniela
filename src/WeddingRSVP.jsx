@@ -47,47 +47,6 @@ const C = {
   bgGreenMid: "#3A5629",
 };
 
-// ═══════════════════════════════════════════════════════
-//  DEMO DATA — reemplazada por Google Sheets en producción
-// ═══════════════════════════════════════════════════════
-const DEMO_GROUPS = [
-  // Mesa #1
-  { id: "1",  name: "Oswaldo Díaz",            maxGuests: 4 },
-  { id: "2",  name: "Manuel Ramos",             maxGuests: 3 },
-  { id: "3",  name: "Fernanda Ramos",           maxGuests: 1 },
-  { id: "4",  name: "Graciela Ramos",           maxGuests: 2 },
-  // Mesa #2
-  { id: "5",  name: "Martha Gonzalez",          maxGuests: 2 },
-  { id: "6",  name: "Lorena Ramos",             maxGuests: 2 },
-  { id: "7",  name: "Ángela Jimenez",           maxGuests: 5 },
-  { id: "8",  name: "Genier Díaz",              maxGuests: 2 },
-  // Mesa #3
-  { id: "9",  name: "Maria del Rosario Ramos",  maxGuests: 5 },
-  { id: "10", name: "María Eugenia Ramos",       maxGuests: 3 },
-  // Mesa #4
-  { id: "11", name: "Daniel Urrea",             maxGuests: 2 },
-  { id: "12", name: "Ana Gabriel Ramirez",      maxGuests: 3 },
-  { id: "13", name: "Catalina Duque",           maxGuests: 2 },
-  { id: "14", name: "José Luis Guzman",         maxGuests: 1 },
-  { id: "15", name: "Juliana Chavez",           maxGuests: 1 },
-  { id: "16", name: "Hugo Ochoa",               maxGuests: 1 },
-  { id: "17", name: "Yorleiner Navia",          maxGuests: 1 },
-  // Mesa #5
-  { id: "18", name: "Diana Córdoba",            maxGuests: 3 },
-  { id: "19", name: "Daniela Cortes",           maxGuests: 3 },
-  { id: "20", name: "Ledy",                     maxGuests: 1 },
-  { id: "21", name: "Paola",                    maxGuests: 1 },
-  { id: "22", name: "Yuliana",                  maxGuests: 1 },
-  { id: "23", name: "Andres",                   maxGuests: 1 },
-  { id: "24", name: "Olga",                     maxGuests: 3 },
-  // Mesa #6
-  { id: "25", name: "Ruth",                     maxGuests: 3 },
-  { id: "26", name: "Josecito",                 maxGuests: 2 },
-  { id: "27", name: "Melchor",                  maxGuests: 3 },
-  // Mesa #7
-  { id: "28", name: "Maricel",                  maxGuests: 5 },
-  { id: "29", name: "Eduardo",                  maxGuests: 2 },
-];
 
 // ═══════════════════════════════════════════════════════
 //  NETWORK HELPER — timeout 10 s + 1 reintento automático
@@ -118,7 +77,7 @@ const api = {
       return (await r.json()).groups || [];
     }
     const s = localStorage.getItem("wg_groups");
-    return s ? JSON.parse(s) : DEMO_GROUPS;
+    return s ? JSON.parse(s) : [];
   },
   async checkConfirmed(familyId) {
     if (SCRIPT_URL) {
