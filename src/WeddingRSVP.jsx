@@ -209,12 +209,10 @@ const LeafScatter = () => (
 // ═══════════════════════════════════════════════════════
 const GlobalStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-family: 'Lovelace', Georgia, serif;
       background: ${C.cream};
       color: ${C.text};
       min-height: 100vh;
@@ -272,7 +270,7 @@ const GlobalStyles = () => (
     /* ── Material Expressive buttons ── */
     .btn {
       display: inline-flex; align-items: center; justify-content: center;
-      font-family: 'Jost', sans-serif; font-weight: 500; letter-spacing: 2px;
+      font-family: 'Lovelace', Georgia, serif; font-weight: 500; letter-spacing: 2px;
       text-transform: uppercase; font-size: 12px; cursor: pointer;
       border-radius: 50px; border: none; transition: all .3s cubic-bezier(.34,1.56,.64,1);
       padding: 15px 40px; position: relative; overflow: hidden;
@@ -312,7 +310,7 @@ const GlobalStyles = () => (
       width: 100%; padding: 14px 20px;
       border: 2px solid ${C.oliveFog}; border-radius: 16px;
       background: rgba(255,255,255,.85); font-size: 17px;
-      font-family: 'Cormorant Garamond', serif; color: ${C.text};
+      font-family: 'Lovelace', Georgia, serif; color: ${C.text};
       outline: none; transition: all .25s;
       box-shadow: 0 2px 8px rgba(92,107,46,.06);
     }
@@ -353,6 +351,12 @@ const GlobalStyles = () => (
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: ${C.cream}; }
     ::-webkit-scrollbar-thumb { background: ${C.oliveLight}; border-radius: 99px; }
+
+    @media (max-width: 480px) {
+      body { font-size: 17px; }
+      .btn { font-size: 14px; padding: 14px 36px; letter-spacing: 1.5px; }
+      .inp { font-size: 18px; }
+    }
   `}</style>
 );
 
@@ -407,7 +411,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       {/* Tag */}
       <div className="d1">
         <span style={{
-          fontFamily: "Jost, sans-serif", fontSize: 11,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 4, textTransform: "uppercase",
           background: `linear-gradient(135deg, ${C.olivePale}, #d8e6b0)`,
           color: C.olive, fontWeight: 600,
@@ -421,7 +425,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       {/* Monogram / symbol */}
       <div className="d2" style={{ margin: "28px 0 0" }}>
         <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 11,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 5, color: C.gold,
         }}>✦ ✦ ✦</p>
       </div>
@@ -429,7 +433,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       {/* Names */}
       <div className="d2" style={{ marginTop: 8 }}>
         <h1 style={{
-          fontFamily: "Playfair Display, Georgia, serif",
+          fontFamily: "Lovelace, Georgia, serif",
           fontSize: "clamp(50px, 11vw, 84px)",
           fontWeight: 400, fontStyle: "italic",
           color: C.olive, lineHeight: 1.05,
@@ -441,14 +445,14 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
 
       <div className="d3" style={{ margin: "4px 0 6px" }}>
         <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 14,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 14,
           letterSpacing: 5, color: C.gold,
         }}>&amp;</p>
       </div>
 
       <div className="d3">
         <h1 style={{
-          fontFamily: "Playfair Display, Georgia, serif",
+          fontFamily: "Lovelace, Georgia, serif",
           fontSize: "clamp(50px, 11vw, 84px)",
           fontWeight: 400, fontStyle: "italic",
           color: C.olive, lineHeight: 1.05,
@@ -462,7 +466,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       <div className="d4" style={{ margin: "28px 0" }}>
         <div className="gline" style={{ width: 80 }} />
         <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 11,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 4, textTransform: "uppercase",
           color: C.muted, marginTop: 20,
         }}>{WEDDING.date}</p>
@@ -470,7 +474,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
           {WEDDING.time} · {WEDDING.venue}
         </p>
         <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 11,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
           letterSpacing: 2, color: C.muted, marginTop: 4,
         }}>{WEDDING.address}</p>
         <div className="gline" style={{ width: 80, marginTop: 20 }} />
@@ -578,7 +582,7 @@ const RSVPPage = ({ onBack }) => {
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <span style={{
-            fontFamily: "Jost, sans-serif", fontSize: 10, letterSpacing: 4,
+            fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 4,
             textTransform: "uppercase",
             background: `linear-gradient(135deg, ${C.olivePale}, #d8e6b0)`,
             color: C.olive, fontWeight: 600,
@@ -587,7 +591,7 @@ const RSVPPage = ({ onBack }) => {
             boxShadow: "0 2px 8px rgba(92,107,46,.1)",
           }}>Confirmar Asistencia</span>
           <p style={{
-            fontFamily: "Playfair Display, serif", fontSize: 26,
+            fontFamily: "Lovelace, Georgia, serif", fontSize: 26,
             fontStyle: "italic", color: C.olive, marginTop: 10, fontWeight: 400,
           }}>{WEDDING.bride} &amp; {WEDDING.groom}</p>
           <div className="gline" style={{ width: 60, marginTop: 12 }} />
@@ -613,7 +617,7 @@ const RSVPPage = ({ onBack }) => {
               ¿Cuál es tu nombre?
             </p>
             <p style={{
-              fontFamily: "Jost, sans-serif", fontSize: 12, letterSpacing: .5,
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 12, letterSpacing: .5,
               color: C.muted, textAlign: "center", marginBottom: 22,
             }}>
               Selecciona tu nombre de la lista de invitados
@@ -623,7 +627,7 @@ const RSVPPage = ({ onBack }) => {
               onChange={e => { setSelectedId(e.target.value); setError(""); }}
               style={{
                 width: "100%", padding: "14px 20px",
-                fontFamily: "Cormorant Garamond, serif", fontSize: 17,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 17,
                 color: selectedId ? C.text : C.muted,
                 background: "rgba(255,255,255,.85)",
                 border: `2px solid ${C.oliveFog}`,
@@ -646,7 +650,7 @@ const RSVPPage = ({ onBack }) => {
               ))}
             </select>
             {error && <p style={{
-              fontFamily: "Jost, sans-serif", fontSize: 13,
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
               color: C.error, marginBottom: 10,
             }}>{error}</p>}
             <button className="btn btn-g" onClick={handleSearch} disabled={loading || !selectedId}
@@ -670,7 +674,7 @@ const RSVPPage = ({ onBack }) => {
               margin: "0 auto 20px", fontSize: 28, color: C.olive,
             }}>✓</div>
             <p style={{
-              fontFamily: "Playfair Display, serif", fontSize: 26,
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 26,
               color: C.olive, fontStyle: "italic",
             }}>¡Ya confirmaste!</p>
             <p style={{ marginTop: 12, fontStyle: "italic", color: C.muted, fontSize: 17 }}>
@@ -682,7 +686,7 @@ const RSVPPage = ({ onBack }) => {
               background: `linear-gradient(135deg, ${C.olivePale}, #e5efcc)`,
               borderRadius: 16,
               border: `1px solid rgba(92,107,46,.15)`,
-              fontFamily: "Jost, sans-serif", fontSize: 13, letterSpacing: .5,
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 13, letterSpacing: .5,
               lineHeight: 2,
             }}>
               <p>📅 {WEDDING.date}</p>
@@ -710,7 +714,7 @@ const RSVPPage = ({ onBack }) => {
                 ¡Hola, <strong>{family.name}</strong>!
               </p>
               <p style={{
-                fontFamily: "Jost, sans-serif", fontSize: 12, color: C.muted,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 12, color: C.muted,
                 marginTop: 5, letterSpacing: .5,
               }}>
                 Tu grupo puede asistir con hasta{" "}
@@ -723,7 +727,7 @@ const RSVPPage = ({ onBack }) => {
             {/* Guest counter */}
             <div style={{ marginBottom: 20 }}>
               <p style={{
-                fontFamily: "Jost, sans-serif", fontSize: 11,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
                 letterSpacing: 2, textTransform: "uppercase",
                 color: C.muted, marginBottom: 10,
               }}>¿Cuántos asistirán?</p>
@@ -738,7 +742,7 @@ const RSVPPage = ({ onBack }) => {
                   }}>−</button>
                 <div style={{
                   flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-                  fontFamily: "Playfair Display, serif", fontSize: 24,
+                  fontFamily: "Lovelace, Georgia, serif", fontSize: 24,
                   background: "white",
                 }}>{guests}</div>
                 <button
@@ -750,7 +754,7 @@ const RSVPPage = ({ onBack }) => {
                     transition: "background .2s",
                   }}>+</button>
               </div>
-              <p style={{ fontFamily: "Jost, sans-serif", fontSize: 11, color: C.muted, marginTop: 6 }}>
+              <p style={{ fontFamily: "Lovelace, Georgia, serif", fontSize: 11, color: C.muted, marginTop: 6 }}>
                 Máximo {family.maxGuests} persona{family.maxGuests !== 1 ? "s" : ""}
               </p>
             </div>
@@ -758,7 +762,7 @@ const RSVPPage = ({ onBack }) => {
             {/* Phone */}
             <div style={{ marginBottom: 14 }}>
               <p style={{
-                fontFamily: "Jost, sans-serif", fontSize: 11, letterSpacing: 2,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 11, letterSpacing: 2,
                 textTransform: "uppercase", color: C.muted, marginBottom: 8,
               }}>Celular (para recibir confirmación por WhatsApp)</p>
               <input className="inp" value={phone}
@@ -770,7 +774,7 @@ const RSVPPage = ({ onBack }) => {
             {/* Email */}
             <div style={{ marginBottom: 8 }}>
               <p style={{
-                fontFamily: "Jost, sans-serif", fontSize: 11, letterSpacing: 2,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 11, letterSpacing: 2,
                 textTransform: "uppercase", color: C.muted, marginBottom: 8,
               }}>Correo electrónico (opcional)</p>
               <input className="inp" value={email}
@@ -780,7 +784,7 @@ const RSVPPage = ({ onBack }) => {
             </div>
 
             {error && <p style={{
-              fontFamily: "Jost, sans-serif", fontSize: 13,
+              fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
               color: C.error, margin: "8px 0",
             }}>{error}</p>}
 
@@ -806,7 +810,7 @@ const RSVPPage = ({ onBack }) => {
               margin: "0 auto 18px", fontSize: 34,
             }}>🌿</div>
             <p style={{
-              fontFamily: "Playfair Display, serif",
+              fontFamily: "Lovelace, Georgia, serif",
               fontSize: 32, fontStyle: "italic", color: C.olive, fontWeight: 400,
             }}>¡Confirmado!</p>
             <p style={{ fontStyle: "italic", color: C.muted, fontSize: 17, marginTop: 8 }}>
@@ -824,7 +828,7 @@ const RSVPPage = ({ onBack }) => {
               textAlign: "left",
             }}>
               <p style={{
-                fontFamily: "Jost, sans-serif", fontSize: 10, letterSpacing: 3,
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 3,
                 textTransform: "uppercase", color: C.olive, marginBottom: 14, fontWeight: 600,
               }}>Detalles de la boda</p>
               {[
@@ -850,7 +854,7 @@ const RSVPPage = ({ onBack }) => {
                   display: "flex", alignItems: "center", justifyContent: "center",
                   gap: 10, background: "linear-gradient(135deg, #25D366, #1db954)", color: "white",
                   padding: "15px 28px", borderRadius: 50,
-                  fontFamily: "Jost, sans-serif", fontSize: 11,
+                  fontFamily: "Lovelace, Georgia, serif", fontSize: 11,
                   fontWeight: 500, letterSpacing: 2,
                   textTransform: "uppercase", textDecoration: "none",
                   marginBottom: 10,
@@ -898,14 +902,14 @@ const AdminLogin = ({ onLogin, onBack }) => {
         textAlign: "center", border: `1px solid rgba(184,147,58,.2)`,
       }}>
         <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 10,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 10,
           letterSpacing: 4, textTransform: "uppercase",
           background: `linear-gradient(135deg, ${C.olivePale}, #d8e6b0)`, color: C.olive,
           fontWeight: 600, padding: "5px 16px", borderRadius: 50,
           display: "inline-block", border: "1px solid rgba(92,107,46,.2)",
         }}>Acceso Privado</p>
         <p style={{
-          fontFamily: "Playfair Display, serif",
+          fontFamily: "Lovelace, Georgia, serif",
           fontSize: 28, fontStyle: "italic", color: C.olive, marginTop: 14,
         }}>Administradores</p>
         <div className="gline" style={{ width: 60, marginTop: 12, marginBottom: 28 }} />
@@ -917,7 +921,7 @@ const AdminLogin = ({ onLogin, onBack }) => {
           style={{ textAlign: "center", letterSpacing: 6, marginBottom: 8 }}
         />
         {error && <p style={{
-          fontFamily: "Jost, sans-serif", fontSize: 13,
+          fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
           color: C.error, marginBottom: 8,
         }}>{error}</p>}
 
@@ -1001,7 +1005,7 @@ const AdminDashboard = ({ onLogout }) => {
   const TH = ({ children }) => (
     <th style={{
       padding: "12px 16px", textAlign: "left",
-      fontFamily: "Jost, sans-serif", fontSize: 10,
+      fontFamily: "Lovelace, Georgia, serif", fontSize: 10,
       letterSpacing: 2.5, textTransform: "uppercase",
       color: "white", fontWeight: 500, whiteSpace: "nowrap",
       background: C.olive,
@@ -1017,7 +1021,7 @@ const AdminDashboard = ({ onLogout }) => {
   const Tab = ({ id, label }) => (
     <button onClick={() => setTab(id)} style={{
       padding: "12px 22px", border: "none", cursor: "pointer",
-      fontFamily: "Jost, sans-serif", fontSize: 11, letterSpacing: 2.5,
+      fontFamily: "Lovelace, Georgia, serif", fontSize: 11, letterSpacing: 2.5,
       textTransform: "uppercase",
       background: tab === id ? "white" : "transparent",
       color: tab === id ? C.olive : C.muted,
@@ -1027,7 +1031,7 @@ const AdminDashboard = ({ onLogout }) => {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "#EEF0EA", fontFamily: "Jost, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#EEF0EA", fontFamily: "Lovelace, Georgia, serif" }}>
       {/* Header */}
       <div style={{
         background: C.brown, padding: "18px 24px",
@@ -1036,10 +1040,10 @@ const AdminDashboard = ({ onLogout }) => {
       }}>
         <div>
           <p style={{
-            fontFamily: "Playfair Display, serif", color: "white",
+            fontFamily: "Lovelace, Georgia, serif", color: "white",
             fontSize: 19, fontStyle: "italic",
           }}>{WEDDING.bride} &amp; {WEDDING.groom}</p>
-          <p style={{ fontFamily: "Jost, sans-serif", color: C.muted, fontSize: 11, letterSpacing: 2 }}>
+          <p style={{ fontFamily: "Lovelace, Georgia, serif", color: C.muted, fontSize: 11, letterSpacing: 2 }}>
             {WEDDING.date} · Panel de Administradores
           </p>
         </div>
@@ -1080,7 +1084,7 @@ const AdminDashboard = ({ onLogout }) => {
         {loading ? (
           <div style={{ textAlign: "center", padding: 80 }}>
             <p style={{
-              fontFamily: "Cormorant Garamond, serif",
+              fontFamily: "Lovelace, Georgia, serif",
               fontStyle: "italic", fontSize: 20, color: C.muted,
             }}>Cargando datos...</p>
           </div>
@@ -1109,7 +1113,7 @@ const AdminDashboard = ({ onLogout }) => {
                     }}>
                       <div style={{ fontSize: 20, marginBottom: 6 }}>{s.icon}</div>
                       <div style={{
-                        fontFamily: "Playfair Display, serif",
+                        fontFamily: "Lovelace, Georgia, serif",
                         fontSize: 40, color: s.color, lineHeight: 1,
                       }}>{s.val}</div>
                       <div style={{
@@ -1177,11 +1181,11 @@ const AdminDashboard = ({ onLogout }) => {
                           ))}
                         </Pie>
                         <Tooltip
-                          contentStyle={{ fontFamily: "Jost, sans-serif", fontSize: 12 }}
+                          contentStyle={{ fontFamily: "Lovelace, Georgia, serif", fontSize: 12 }}
                         />
                         <Legend
                           formatter={v => (
-                            <span style={{ fontFamily: "Jost, sans-serif", fontSize: 11, letterSpacing: 1 }}>{v}</span>
+                            <span style={{ fontFamily: "Lovelace, Georgia, serif", fontSize: 11, letterSpacing: 1 }}>{v}</span>
                           )}
                         />
                       </PieChart>
@@ -1203,10 +1207,10 @@ const AdminDashboard = ({ onLogout }) => {
                           margin={{ top: 0, right: 0, bottom: 24, left: -10 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke={C.olivePale} />
                           <XAxis dataKey="name"
-                            tick={{ fontSize: 10, fontFamily: "Jost, sans-serif" }}
+                            tick={{ fontSize: 10, fontFamily: "Lovelace, Georgia, serif" }}
                             angle={-35} textAnchor="end" />
-                          <YAxis tick={{ fontSize: 11, fontFamily: "Jost, sans-serif" }} />
-                          <Tooltip contentStyle={{ fontFamily: "Jost, sans-serif", fontSize: 12 }} />
+                          <YAxis tick={{ fontSize: 11, fontFamily: "Lovelace, Georgia, serif" }} />
+                          <Tooltip contentStyle={{ fontFamily: "Lovelace, Georgia, serif", fontSize: 12 }} />
                           <Bar dataKey="Personas" fill={C.olive} radius={[3, 3, 0, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
@@ -1229,7 +1233,7 @@ const AdminDashboard = ({ onLogout }) => {
                     onChange={e => setSearchAdmin(e.target.value)}
                     style={{
                       padding: "8px 14px", border: `1.5px solid ${C.oliveFog}`,
-                      borderRadius: 2, fontFamily: "Cormorant Garamond, serif",
+                      borderRadius: 2, fontFamily: "Lovelace, Georgia, serif",
                       fontSize: 15, outline: "none", width: 280,
                       background: "white",
                     }}
@@ -1241,7 +1245,7 @@ const AdminDashboard = ({ onLogout }) => {
                     background: "white", borderRadius: 4,
                   }}>
                     <p style={{
-                      fontFamily: "Cormorant Garamond, serif",
+                      fontFamily: "Lovelace, Georgia, serif",
                       fontStyle: "italic", color: C.muted, fontSize: 20,
                     }}>Aún no hay confirmaciones</p>
                   </div>
@@ -1301,7 +1305,7 @@ const AdminDashboard = ({ onLogout }) => {
                   boxShadow: "0 2px 12px rgba(0,0,0,.07)",
                 }}>
                   <p style={{
-                    fontFamily: "Playfair Display, serif",
+                    fontFamily: "Lovelace, Georgia, serif",
                     fontSize: 24, fontStyle: "italic", color: C.olive, marginBottom: 8,
                   }}>Cargar Grupos Familiares</p>
                   <p style={{ fontStyle: "italic", color: C.muted, fontSize: 16, marginBottom: 28 }}>
@@ -1331,7 +1335,7 @@ const AdminDashboard = ({ onLogout }) => {
                       padding: "12px 16px", borderRadius: 2, marginBottom: 20,
                       background: uploadMsg.startsWith("✓") ? "#E8F5E9" : "#FFEBEE",
                       color: uploadMsg.startsWith("✓") ? C.success : C.error,
-                      fontFamily: "Jost, sans-serif", fontSize: 13,
+                      fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
                     }}>{uploadMsg}</div>
                   )}
 
@@ -1367,7 +1371,7 @@ const AdminDashboard = ({ onLogout }) => {
                   </div>
 
                   {groups.length > 0 && (
-                    <p style={{ fontSize: 13, color: C.success, marginTop: 16, fontFamily: "Jost, sans-serif" }}>
+                    <p style={{ fontSize: 13, color: C.success, marginTop: 16, fontFamily: "Lovelace, Georgia, serif" }}>
                       ✓ {groups.length} grupos cargados actualmente en el sistema
                     </p>
                   )}
