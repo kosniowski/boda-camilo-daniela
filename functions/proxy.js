@@ -1,5 +1,5 @@
 const GAS_URL =
-  "https://script.google.com/macros/s/AKfycbyNpjpZzIEhxO0H-xn-24BIZPRK8lb4gDzho_IBTcOi6y6fuVOD-FXF4ZR5-PRD4x1Iww/exec";
+  "https://script.google.com/macros/s/AKfycbwQyMc_ZbQQiWfwg4pKbncAS1L4so0ikWLm7O0_gfuPf8F8eNf5p-PG7HCceXG8OL8ihA/exec";
 
 const CORS = {
   "Access-Control-Allow-Origin":  "*",
