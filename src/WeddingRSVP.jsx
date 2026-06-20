@@ -9,8 +9,8 @@ import * as XLSX from "xlsx";
 // ═══════════════════════════════════════════════════════
 //  🌿 CONFIGURACIÓN — Actualiza estos valores
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQyMc_ZbQQiWfwg4pKbncAS1L4so0ikWLm7O0_gfuPf8F8eNf5p-PG7HCceXG8OL8ihA/exec";
-const SHEETS_URL = ""; // Pega aquí la URL de tu Google Sheets
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbsar8pY8axTcLrm8qeKA3kDYUeMRRy4FwrOM5gETXcf54gwb9DcBC-kqhQ55FGj36Pg/exec";
+const SHEETS_URL = "https://docs.google.com/spreadsheets/d/1gqw4TlOymQFyuFzDM9RFYsAzOWpYoAMIahievTkBG1o/edit";
 const ADMIN_PASSWORD = "CamiloDaniela2025";
 
 const WEDDING = {

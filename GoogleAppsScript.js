@@ -6,7 +6,7 @@
 
 // ► Reemplaza con el ID de tu Google Sheets
 //   (está en la URL: docs.google.com/spreadsheets/d/ESTE_ID/edit)
-const SPREADSHEET_ID = "TU_SPREADSHEET_ID_AQUI";
+const SPREADSHEET_ID = "1gqw4TlOymQFyuFzDM9RFYsAzOWpYoAMIahievTkBG1o";
 
 const SS  = SpreadsheetApp.openById(SPREADSHEET_ID);
 
