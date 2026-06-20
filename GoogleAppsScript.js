@@ -135,32 +135,6 @@ function saveConfirmation(data) {
     data.email      || "",
     new Date().toISOString(),
   ]);
-
-  // Notificación por correo
-  try {
-    const guests = data.guestCount === 1 ? "1 persona" : (data.guestCount + " personas");
-    MailApp.sendEmail({
-      to: "camilomarquez1988@gmail.com",
-      subject: "🎉 Nueva confirmación — " + (data.familyName || "Invitado"),
-      body: [
-        "¡Hola Camilo!",
-        "",
-        "Se acaba de confirmar una asistencia:",
-        "",
-        "  Familia:   " + (data.familyName || "—"),
-        "  Personas:  " + guests,
-        "  Teléfono:  " + (data.phone || "—"),
-        "  Correo:    " + (data.email  || "—"),
-        "",
-        "Ver todas las confirmaciones en el panel de admin.",
-        "",
-        "— Sistema de Confirmaciones Camilo & Daniela 🌿",
-      ].join("\n"),
-    });
-  } catch (mailErr) {
-    // Si falla el correo no bloqueamos la confirmación
-    Logger.log("Error enviando correo: " + mailErr.message);
-  }
 }
 
 function deleteConfirmation(familyId) {
@@ -218,13 +192,14 @@ function ensureSheet(name, headers) {
 //  1. Ve a  https://script.google.com/  → Nuevo proyecto
 //  2. Pega este código completo
 //  3. Reemplaza SPREADSHEET_ID con el ID de tu Google Sheets
+//     (está en la URL: docs.google.com/spreadsheets/d/ESTE_ID/edit)
 //  4. Haz clic en "Implementar" → "Nueva implementación"
 //  5. Tipo: "Aplicación web"
 //     - Ejecutar como: Yo (tu cuenta)
 //     - Quién tiene acceso: Cualquier usuario
 //  6. Autoriza los permisos cuando te lo pida
-//  7. Copia la URL que te da y pégala en WeddingRSVP.jsx
-//     como valor de SCRIPT_URL
+//  7. Copia la URL y pégala en functions/proxy.js como valor de GAS_URL
 //
-//  ¡Listo! El sistema guardará todo en Google Sheets automáticamente.
+//  Para actualizar el script sin cambiar la URL:
+//  "Implementar" → "Gestionar implementaciones" → lápiz → "Nueva versión"
 // ═══════════════════════════════════════════════════════════════
