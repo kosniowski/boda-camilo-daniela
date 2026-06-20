@@ -377,6 +377,7 @@ const GlobalStyles = () => (
       body { font-size: 17px; }
       .btn { font-size: 14px; padding: 14px 36px; letter-spacing: 1.5px; }
       .inp { font-size: 18px; }
+      .hide-mobile { display: none !important; }
     }
   `}</style>
 );
@@ -1271,9 +1272,12 @@ const AdminDashboard = ({ onLogout }) => {
 
   const handleDelete = async (familyId) => {
     try {
-      await api.deleteConfirmation(familyId);
+      const result = await api.deleteConfirmation(familyId);
+      if (result?.success === false) throw new Error("server error");
       setConfirmations(prev => prev.filter(c => c.familyId !== familyId));
-    } catch { /* silencioso — el usuario puede reintentar */ }
+    } catch {
+      alert("No se pudo eliminar. Verifica que el Apps Script esté actualizado.");
+    }
     setDeletingId(null);
   };
 
@@ -1299,19 +1303,21 @@ const AdminDashboard = ({ onLogout }) => {
     c.email?.toLowerCase().includes(searchAdmin.toLowerCase())
   );
 
-  const TH = ({ children }) => (
+  const TH = ({ children, hide }) => (
     <th style={{
-      padding: "12px 16px", textAlign: "left",
+      padding: "10px 12px", textAlign: "left",
       fontFamily: "Lovelace, Georgia, serif", fontSize: 10,
-      letterSpacing: 2.5, textTransform: "uppercase",
+      letterSpacing: 2, textTransform: "uppercase",
       color: "white", fontWeight: 500, whiteSpace: "nowrap",
       background: C.olive,
+      display: hide ? "none" : undefined,
     }}>{children}</th>
   );
-  const TD = ({ children, center }) => (
+  const TD = ({ children, center, hide }) => (
     <td style={{
-      padding: "12px 16px", borderBottom: `1px solid ${C.olivePale}`,
-      fontSize: 15, color: C.text, textAlign: center ? "center" : "left",
+      padding: "10px 12px", borderBottom: `1px solid ${C.olivePale}`,
+      fontSize: 14, color: C.text, textAlign: center ? "center" : "left",
+      display: hide ? "none" : undefined,
     }}>{children}</td>
   );
 
@@ -1331,38 +1337,38 @@ const AdminDashboard = ({ onLogout }) => {
     <div style={{ minHeight: "100vh", background: "#EEF0EA", fontFamily: "Lovelace, Georgia, serif" }}>
       {/* Header */}
       <div style={{
-        background: C.brown, padding: "18px 24px",
+        background: C.brown, padding: "14px 16px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        flexWrap: "wrap", gap: 12,
+        flexWrap: "wrap", gap: 10,
       }}>
         <div>
           <p style={{
             fontFamily: "Lovelace, Georgia, serif", color: "white",
-            fontSize: 19, fontStyle: "italic",
+            fontSize: 17, fontStyle: "italic",
           }}>{WEDDING.bride} &amp; {WEDDING.groom}</p>
-          <p style={{ fontFamily: "Lovelace, Georgia, serif", color: C.muted, fontSize: 11, letterSpacing: 2 }}>
-            {WEDDING.date} · Panel de Administradores
+          <p style={{ fontFamily: "Lovelace, Georgia, serif", color: C.muted, fontSize: 10, letterSpacing: 1.5 }}>
+            Panel de Administradores
           </p>
         </div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {SHEETS_URL && (
             <a href={SHEETS_URL} target="_blank" rel="noopener noreferrer"
               style={{
-                background: "#34A853", color: "white", padding: "8px 16px",
-                borderRadius: 2, fontSize: 11, letterSpacing: 2,
+                background: "#34A853", color: "white", padding: "7px 12px",
+                borderRadius: 2, fontSize: 10, letterSpacing: 1.5,
                 textDecoration: "none", textTransform: "uppercase",
-                display: "inline-flex", alignItems: "center", gap: 6,
-              }}>📊 Google Sheets</a>
+                display: "inline-flex", alignItems: "center", gap: 5,
+              }}>📊 Sheets</a>
           )}
           <button onClick={load} style={{
             background: C.oliveMid, color: "white", border: "none",
-            padding: "8px 16px", borderRadius: 2, cursor: "pointer",
-            fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
-          }}>↻ Actualizar</button>
+            padding: "7px 12px", borderRadius: 2, cursor: "pointer",
+            fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase",
+          }}>↻</button>
           <button onClick={onLogout} style={{
             background: "transparent", color: "#888", border: "1px solid #444",
-            padding: "8px 16px", borderRadius: 2, cursor: "pointer",
-            fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
+            padding: "7px 12px", borderRadius: 2, cursor: "pointer",
+            fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase",
           }}>Salir</button>
         </div>
       </div>
@@ -1533,8 +1539,8 @@ const AdminDashboard = ({ onLogout }) => {
             {/* ─── LIST ─── */}
             {tab === "list" && (
               <div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <p style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: C.muted }}>
                       {confirmations.length} confirmaciones
                     </p>
@@ -1561,7 +1567,7 @@ const AdminDashboard = ({ onLogout }) => {
                     style={{
                       padding: "8px 14px", border: `1.5px solid ${C.oliveFog}`,
                       borderRadius: 2, fontFamily: "Lovelace, Georgia, serif",
-                      fontSize: 15, outline: "none", width: 280,
+                      fontSize: 15, outline: "none", width: "min(280px, 100%)",
                       background: "white",
                     }}
                   />
@@ -1584,9 +1590,9 @@ const AdminDashboard = ({ onLogout }) => {
                           <TH>#</TH>
                           <TH>Familia</TH>
                           <TH>Personas</TH>
-                          <TH>Teléfono</TH>
-                          <TH>Correo</TH>
-                          <TH>Fecha</TH>
+                          <th className="hide-mobile" style={{ padding: "10px 12px", textAlign: "left", fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "white", fontWeight: 500, whiteSpace: "nowrap", background: C.olive }}>Teléfono</th>
+                          <th className="hide-mobile" style={{ padding: "10px 12px", textAlign: "left", fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "white", fontWeight: 500, whiteSpace: "nowrap", background: C.olive }}>Correo</th>
+                          <th className="hide-mobile" style={{ padding: "10px 12px", textAlign: "left", fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "white", fontWeight: 500, whiteSpace: "nowrap", background: C.olive }}>Fecha</th>
                           <TH></TH>
                         </tr>
                       </thead>
@@ -1605,17 +1611,13 @@ const AdminDashboard = ({ onLogout }) => {
                                 fontSize: 14, fontWeight: 600,
                               }}>{c.guestCount}</span>
                             </TD>
-                            <TD><span style={{ color: C.muted, fontSize: 14 }}>{c.phone || "—"}</span></TD>
-                            <TD><span style={{ color: C.muted, fontSize: 14 }}>{c.email || "—"}</span></TD>
-                            <TD>
-                              <span style={{ color: C.muted, fontSize: 12 }}>
-                                {c.timestamp
-                                  ? new Date(c.timestamp).toLocaleDateString("es-CO", {
-                                      day: "2-digit", month: "short", year: "2-digit"
-                                    })
-                                  : "—"}
-                              </span>
-                            </TD>
+                            <td className="hide-mobile" style={{ padding: "10px 12px", borderBottom: `1px solid ${C.olivePale}`, fontSize: 14, color: C.muted }}>{c.phone || "—"}</td>
+                            <td className="hide-mobile" style={{ padding: "10px 12px", borderBottom: `1px solid ${C.olivePale}`, fontSize: 14, color: C.muted }}>{c.email || "—"}</td>
+                            <td className="hide-mobile" style={{ padding: "10px 12px", borderBottom: `1px solid ${C.olivePale}`, fontSize: 12, color: C.muted }}>
+                              {c.timestamp
+                                ? new Date(c.timestamp).toLocaleDateString("es-CO", { day: "2-digit", month: "short", year: "2-digit" })
+                                : "—"}
+                            </td>
                             <TD center>
                               {deletingId === c.familyId ? (
                                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
