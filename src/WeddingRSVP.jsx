@@ -1086,6 +1086,38 @@ const RSVPPage = ({ onBack }) => {
               ))}
             </div>
 
+            {/* Sugerencia de regalo */}
+            <div style={{
+              margin: "0 0 18px",
+              padding: "20px 22px",
+              background: `linear-gradient(135deg, #FFF8EC, #FEF2D6)`,
+              borderRadius: 20,
+              border: `1px solid rgba(184,147,58,.25)`,
+              boxShadow: "0 4px 16px rgba(184,147,58,.08)",
+              textAlign: "left",
+            }}>
+              <p style={{
+                fontFamily: "Lovelace, Georgia, serif", fontSize: 10, letterSpacing: 3,
+                textTransform: "uppercase", color: C.gold, marginBottom: 10, fontWeight: 600,
+              }}>🎁 Sugerencia de regalo</p>
+              <p style={{ fontSize: 14, lineHeight: 1.6, color: C.text, fontStyle: "italic", marginBottom: 12 }}>
+                El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, les dejamos estas opciones:
+              </p>
+              {[
+                ["✉️", "LLUVIA DE SOBRES"],
+                ["💲", "TRANSFERENCIA"],
+              ].map(([icon, label]) => (
+                <div key={label} style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "center" }}>
+                  <span style={{ fontSize: 14 }}>{icon}</span>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{label}</p>
+                </div>
+              ))}
+              <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid rgba(184,147,58,.2)` }}>
+                <p style={{ fontSize: 14, color: C.text }}>Bre-b: <strong>@DDR381</strong></p>
+                <p style={{ fontSize: 14, color: C.text, marginTop: 4 }}>Bancolombia: <strong>Ahorros · 91294726620</strong></p>
+              </div>
+            </div>
+
             {/* WhatsApp */}
             {phone && (
               <a href={buildWAUrl(phone, family?.name || "", guests)}
