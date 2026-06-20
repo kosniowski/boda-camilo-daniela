@@ -165,6 +165,12 @@ const buildWAUrl = (phone, familyName, guests) => {
     `⛪ Ceremonia: ${WEDDING.venue} · ${WEDDING.address}\n` +
     `🥂 Recepción: ${WEDDING.venueReception}\n` +
     `👗 Vestimenta: ${WEDDING.dressCode}\n\n` +
+    `🎁 *Sugerencia de regalo:*\n` +
+    `El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, les dejamos estas opciones:\n\n` +
+    `- LLUVIA DE SOBRES ✉️\n` +
+    `- TRANSFERENCIA 💲\n` +
+    `Bre-b: @DDR381\n` +
+    `Bancolombia: Ahorros - 91294726620\n\n` +
     `¡Los esperamos con mucho amor! 💚🌿`;
   return `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
 };
@@ -720,7 +726,8 @@ const RSVPPage = ({ onBack }) => {
       const clean = g.map(x => ({
         ...x,
         name: x.name
-          .replace(/[^\p{L}\p{N}\s.,&'-]/gu, "")  // quita símbolos raros, conserva letras/tildes
+          .normalize("NFC")
+          .replace(/[^\p{L}\p{N}\s.,&'-]/gu, "")
           .replace(/\s+/g, " ")
           .trim(),
       })).sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
@@ -1233,9 +1240,7 @@ const AdminDashboard = ({ onLogout }) => {
     const reader = new FileReader();
     reader.onload = async (ev) => {
       try {
-        const wb = isCsv
-          ? XLSX.read(ev.target.result, { type: "string" })
-          : XLSX.read(ev.target.result, { type: "array" });
+        const wb = XLSX.read(ev.target.result, { type: "array" });
         const ws = wb.Sheets[wb.SheetNames[0]];
         const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
         const parsed = [];
@@ -1249,7 +1254,7 @@ const AdminDashboard = ({ onLogout }) => {
             const m = s.match(/^(.+?)\s*\((\d+)\)\s*$/);
             parsed.push({
               id: String(Date.now() + counter++),
-              name: m ? m[1].trim() : s,
+              name: (m ? m[1].trim() : s).normalize("NFC"),
               maxGuests: m ? (parseInt(m[2]) || 1) : 2,
             });
           });
@@ -1259,7 +1264,7 @@ const AdminDashboard = ({ onLogout }) => {
         setUploadMsg(`✓ ${parsed.length} grupos cargados exitosamente`);
       } catch (err) { setUploadMsg(`✗ Error: ${err?.message || err}`); }
     };
-    isCsv ? reader.readAsText(file) : reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(file);
   };
 
   const handleReset = async () => {
