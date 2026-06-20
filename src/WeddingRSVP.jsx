@@ -9,7 +9,7 @@ import * as XLSX from "xlsx";
 // ═══════════════════════════════════════════════════════
 //  🌿 CONFIGURACIÓN — Actualiza estos valores
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL = "/.netlify/functions/proxy";
+const SCRIPT_URL = "/proxy";
 const SHEETS_URL = ""; // Pega aquí la URL de tu Google Sheets
 const ADMIN_PASSWORD = "CamiloDaniela2025";
 
