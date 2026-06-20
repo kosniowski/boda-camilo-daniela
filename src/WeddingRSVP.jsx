@@ -715,7 +715,17 @@ const RSVPPage = ({ onBack }) => {
   const [alreadyDone,   setAlreadyDone]   = useState(false);
 
   useEffect(() => {
-    api.getGroups().then(g => { setGroups(g); setGroupsLoading(false); });
+    api.getGroups().then(g => {
+      const clean = g.map(x => ({
+        ...x,
+        name: x.name
+          .replace(/[^\p{L}\p{N}\s.,&'-]/gu, "")  // quita símbolos raros, conserva letras/tildes
+          .replace(/\s+/g, " ")
+          .trim(),
+      })).sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+      setGroups(clean);
+      setGroupsLoading(false);
+    });
   }, []);
 
   const handleSearch = async () => {
