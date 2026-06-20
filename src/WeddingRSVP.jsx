@@ -92,7 +92,7 @@ const api = {
       const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "confirm", ...data }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
       });
       return await r.json();
     }
@@ -113,7 +113,7 @@ const api = {
       const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "uploadGroups", groups }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
       });
       return await r.json();
     }
@@ -125,7 +125,7 @@ const api = {
       const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "resetConfirmations" }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
       });
       return await r.json();
     }
@@ -137,7 +137,7 @@ const api = {
       const r = await fetchWithTimeout(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({ action: "deleteConfirmation", familyId }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
       });
       return await r.json();
     }
@@ -1201,7 +1201,8 @@ const AdminDashboard = ({ onLogout }) => {
       setConfirmations(c);
       setGroups(g);
     } catch (err) {
-      setLoadError("No se pudo conectar con Google Sheets. Verifica que el SPREADSHEET_ID esté configurado en el Apps Script y vuelve a intentarlo.");
+      const detail = err?.message || String(err);
+      setLoadError(`Error al conectar con Google Sheets: ${detail}`);
     }
     setLoading(false);
   };
@@ -1256,7 +1257,7 @@ const AdminDashboard = ({ onLogout }) => {
         await api.uploadGroups(parsed);
         setGroups(parsed);
         setUploadMsg(`✓ ${parsed.length} grupos cargados exitosamente`);
-      } catch { setUploadMsg("✗ Error al procesar el archivo"); }
+      } catch (err) { setUploadMsg(`✗ Error: ${err?.message || err}`); }
     };
     isCsv ? reader.readAsText(file) : reader.readAsArrayBuffer(file);
   };
@@ -1666,7 +1667,7 @@ const AdminDashboard = ({ onLogout }) => {
                     fontSize: 24, fontStyle: "italic", color: C.olive, marginBottom: 8,
                   }}>Cargar Grupos Familiares</p>
                   <p style={{ fontStyle: "italic", color: C.muted, fontSize: 16, marginBottom: 28 }}>
-                    Sube un archivo Excel (.xlsx) con la lista de grupos invitados
+                    Sube un archivo Excel (.xlsx) o CSV (.csv) con la lista de grupos invitados
                   </p>
 
                   {/* Upload zone */}
@@ -1681,7 +1682,7 @@ const AdminDashboard = ({ onLogout }) => {
                       Haz clic para seleccionar tu archivo
                     </p>
                     <span className="btn btn-g" style={{ fontSize: 11, letterSpacing: 2.5, pointerEvents: "none" }}>
-                      Elegir Archivo .xlsx
+                      Elegir Archivo (.xlsx / .csv)
                     </span>
                     <input id="xls" type="file" accept=".xlsx,.xls,.csv"
                       onChange={handleExcel} style={{ display: "none" }} />
