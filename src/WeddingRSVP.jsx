@@ -9,7 +9,7 @@ import * as XLSX from "xlsx";
 // ═══════════════════════════════════════════════════════
 //  🌿 CONFIGURACIÓN — Actualiza estos valores
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL = "/proxy";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQyMc_ZbQQiWfwg4pKbncAS1L4so0ikWLm7O0_gfuPf8F8eNf5p-PG7HCceXG8OL8ihA/exec";
 const SHEETS_URL = ""; // Pega aquí la URL de tu Google Sheets
 const ADMIN_PASSWORD = "CamiloDaniela2025";
 
@@ -56,7 +56,7 @@ const fetchWithTimeout = async (url, opts = {}, timeoutMs = 10000, retries = 1) 
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
-      const res = await fetch(url, { ...opts, signal: ctrl.signal });
+      const res = await fetch(url, { ...opts, signal: ctrl.signal, redirect: "follow" });
       clearTimeout(timer);
       return res;
     } catch (err) {
