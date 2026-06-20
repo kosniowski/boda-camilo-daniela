@@ -132,6 +132,19 @@ const api = {
     localStorage.removeItem("wg_confirmations");
     return { success: true };
   },
+  async deleteConfirmation(familyId) {
+    if (SCRIPT_URL) {
+      const r = await fetchWithTimeout(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "deleteConfirmation", familyId }),
+        headers: { "Content-Type": "application/json" },
+      });
+      return await r.json();
+    }
+    const c = JSON.parse(localStorage.getItem("wg_confirmations") || "[]");
+    localStorage.setItem("wg_confirmations", JSON.stringify(c.filter(x => x.familyId !== familyId)));
+    return { success: true };
+  },
 };
 
 // ═══════════════════════════════════════════════════════
@@ -352,6 +365,13 @@ const GlobalStyles = () => (
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: ${C.cream}; }
     ::-webkit-scrollbar-thumb { background: ${C.oliveLight}; border-radius: 99px; }
+
+    .skeleton {
+      background: linear-gradient(90deg, ${C.oliveFog} 25%, #eef2e4 50%, ${C.oliveFog} 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 16px;
+    }
 
     @media (max-width: 480px) {
       body { font-size: 17px; }
@@ -642,7 +662,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
             }}>• {label}: {name}{sub ? ` — ${sub}` : ""}</p>
             <a href={href} target="_blank" rel="noopener noreferrer" style={{
               display: "inline-flex", alignItems: "center", gap: 4,
-              background: "rgba(92,107,46,.12)", color: C.olive,
+              background: "#fff", color: C.olive,
               padding: "3px 11px", borderRadius: 50, fontSize: 11,
               textDecoration: "none", border: `1px solid rgba(92,107,46,.35)`,
               whiteSpace: "nowrap", letterSpacing: 1,
@@ -661,8 +681,7 @@ const LandingPage = ({ onRSVP, onAdmin }) => (
       </div>
       <div className="d5" style={{ marginTop: 14 }}>
         <p style={{ fontStyle: "italic", color: C.muted, fontSize: 16 }}>
-          Confirma tu asistencia antes del{" "}
-          <span style={{ color: C.goldLight }}>10 de agosto de 2026</span>
+          Confirma tu asistencia antes del 10 de agosto de 2026
         </p>
       </div>
     </div>
@@ -690,11 +709,14 @@ const RSVPPage = ({ onBack }) => {
   const [guests,      setGuests]      = useState(1);
   const [phone,       setPhone]       = useState("");
   const [email,       setEmail]       = useState("");
-  const [loading,     setLoading]     = useState(false);
-  const [error,       setError]       = useState("");
-  const [alreadyDone, setAlreadyDone] = useState(false);
+  const [loading,       setLoading]       = useState(false);
+  const [groupsLoading, setGroupsLoading] = useState(true);
+  const [error,         setError]         = useState("");
+  const [alreadyDone,   setAlreadyDone]   = useState(false);
 
-  useEffect(() => { api.getGroups().then(setGroups); }, []);
+  useEffect(() => {
+    api.getGroups().then(g => { setGroups(g); setGroupsLoading(false); });
+  }, []);
 
   const handleSearch = async () => {
     setError("");
@@ -795,38 +817,48 @@ const RSVPPage = ({ onBack }) => {
             }}>
               Selecciona tu nombre de la lista de invitados
             </p>
-            <select
-              value={selectedId}
-              onChange={e => { setSelectedId(e.target.value); setError(""); }}
-              style={{
-                width: "100%", padding: "14px 20px",
-                fontFamily: "Lovelace, Georgia, serif", fontSize: 17,
-                color: selectedId ? C.text : C.muted,
-                background: "rgba(255,255,255,.85)",
-                border: `2px solid ${C.oliveFog}`,
-                borderRadius: 16, outline: "none",
-                cursor: "pointer", marginBottom: 12,
-                appearance: "none",
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C6B2E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "right 18px center",
-                paddingRight: 44,
-                boxShadow: "0 2px 8px rgba(92,107,46,.06)",
-                transition: "all .25s",
-              }}
-            >
-              <option value="">— Selecciona tu nombre —</option>
-              {groups.map(g => (
-                <option key={g.id} value={g.id}>
-                  {g.name} ({g.maxGuests} {g.maxGuests === 1 ? "persona" : "personas"})
-                </option>
-              ))}
-            </select>
+            {groupsLoading ? (
+              <div style={{ marginBottom: 12 }}>
+                <div className="skeleton" style={{ width: "100%", height: 54 }} />
+                <p style={{
+                  fontFamily: "Lovelace, Georgia, serif", fontSize: 12,
+                  color: C.muted, textAlign: "center", marginTop: 8, fontStyle: "italic",
+                }}>Cargando lista de invitados…</p>
+              </div>
+            ) : (
+              <select
+                value={selectedId}
+                onChange={e => { setSelectedId(e.target.value); setError(""); }}
+                style={{
+                  width: "100%", padding: "14px 20px",
+                  fontFamily: "Lovelace, Georgia, serif", fontSize: 17,
+                  color: selectedId ? C.text : C.muted,
+                  background: "rgba(255,255,255,.85)",
+                  border: `2px solid ${C.oliveFog}`,
+                  borderRadius: 16, outline: "none",
+                  cursor: "pointer", marginBottom: 12,
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C6B2E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 18px center",
+                  paddingRight: 44,
+                  boxShadow: "0 2px 8px rgba(92,107,46,.06)",
+                  transition: "all .25s",
+                }}
+              >
+                <option value="">— Selecciona tu nombre —</option>
+                {groups.map(g => (
+                  <option key={g.id} value={g.id}>
+                    {g.name} ({g.maxGuests} {g.maxGuests === 1 ? "persona" : "personas"})
+                  </option>
+                ))}
+              </select>
+            )}
             {error && <p style={{
               fontFamily: "Lovelace, Georgia, serif", fontSize: 13,
               color: C.error, marginBottom: 10,
             }}>{error}</p>}
-            <button className="btn btn-g" onClick={handleSearch} disabled={loading || !selectedId}
+            <button className="btn btn-g" onClick={handleSearch} disabled={loading || groupsLoading || !selectedId}
               style={{ width: "100%", marginTop: 4, opacity: selectedId ? 1 : .55 }}>
               {loading ? "Verificando..." : "Continuar →"}
             </button>
@@ -1148,6 +1180,7 @@ const AdminDashboard = ({ onLogout }) => {
   const [confirmReset,  setConfirmReset]  = useState(false);
   const [resetMsg,      setResetMsg]      = useState("");
   const [loadError,     setLoadError]     = useState("");
+  const [deletingId,    setDeletingId]    = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -1184,16 +1217,17 @@ const AdminDashboard = ({ onLogout }) => {
   const handleExcel = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    const isCsv = file.name.toLowerCase().endsWith(".csv");
     const reader = new FileReader();
     reader.onload = async (ev) => {
       try {
-        const wb = XLSX.read(ev.target.result, { type: "array" });
+        const wb = isCsv
+          ? XLSX.read(ev.target.result, { type: "string" })
+          : XLSX.read(ev.target.result, { type: "array" });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        // header:1 → array of rows; each row is array of cells (one column per Mesa)
         const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
         const parsed = [];
         let counter = 0;
-        // Skip first row (headers: Mesa #1, Mesa #2, ...)
         rows.slice(1).forEach(row => {
           if (!Array.isArray(row)) return;
           row.forEach(cell => {
@@ -1213,7 +1247,7 @@ const AdminDashboard = ({ onLogout }) => {
         setUploadMsg(`✓ ${parsed.length} grupos cargados exitosamente`);
       } catch { setUploadMsg("✗ Error al procesar el archivo"); }
     };
-    reader.readAsArrayBuffer(file);
+    isCsv ? reader.readAsText(file) : reader.readAsArrayBuffer(file);
   };
 
   const handleReset = async () => {
@@ -1223,6 +1257,14 @@ const AdminDashboard = ({ onLogout }) => {
       setResetMsg("✓ Confirmaciones eliminadas correctamente");
       setConfirmReset(false);
     } catch { setResetMsg("✗ Error al resetear. Intenta de nuevo."); }
+  };
+
+  const handleDelete = async (familyId) => {
+    try {
+      await api.deleteConfirmation(familyId);
+      setConfirmations(prev => prev.filter(c => c.familyId !== familyId));
+    } catch { /* silencioso — el usuario puede reintentar */ }
+    setDeletingId(null);
   };
 
   // Stats
@@ -1535,6 +1577,7 @@ const AdminDashboard = ({ onLogout }) => {
                           <TH>Teléfono</TH>
                           <TH>Correo</TH>
                           <TH>Fecha</TH>
+                          <TH></TH>
                         </tr>
                       </thead>
                       <tbody>
@@ -1562,6 +1605,31 @@ const AdminDashboard = ({ onLogout }) => {
                                     })
                                   : "—"}
                               </span>
+                            </TD>
+                            <TD center>
+                              {deletingId === c.familyId ? (
+                                <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                  <button onClick={() => handleDelete(c.familyId)} style={{
+                                    background: "#e53935", color: "white", border: "none",
+                                    borderRadius: 2, padding: "3px 8px", fontSize: 11,
+                                    cursor: "pointer", fontFamily: "Lovelace, Georgia, serif",
+                                  }}>Sí</button>
+                                  <button onClick={() => setDeletingId(null)} style={{
+                                    background: C.oliveFog, color: C.olive, border: "none",
+                                    borderRadius: 2, padding: "3px 8px", fontSize: 11,
+                                    cursor: "pointer", fontFamily: "Lovelace, Georgia, serif",
+                                  }}>No</button>
+                                </span>
+                              ) : (
+                                <button onClick={() => setDeletingId(c.familyId)} title="Eliminar confirmación" style={{
+                                  background: "none", border: "none", cursor: "pointer",
+                                  color: C.muted, fontSize: 15, padding: "2px 6px",
+                                  borderRadius: 2, transition: "color .15s",
+                                }}
+                                  onMouseEnter={e => e.currentTarget.style.color = "#e53935"}
+                                  onMouseLeave={e => e.currentTarget.style.color = C.muted}
+                                >✕</button>
+                              )}
                             </TD>
                           </tr>
                         ))}
@@ -1601,7 +1669,7 @@ const AdminDashboard = ({ onLogout }) => {
                     <span className="btn btn-g" style={{ fontSize: 11, letterSpacing: 2.5, pointerEvents: "none" }}>
                       Elegir Archivo .xlsx
                     </span>
-                    <input id="xls" type="file" accept=".xlsx,.xls"
+                    <input id="xls" type="file" accept=".xlsx,.xls,.csv"
                       onChange={handleExcel} style={{ display: "none" }} />
                   </label>
 

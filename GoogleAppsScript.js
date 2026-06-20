@@ -65,6 +65,14 @@ function doPost(e) {
       uploadGroups(body.groups);
       result = { success: true, count: body.groups.length };
 
+    } else if (action === "resetConfirmations") {
+      resetConfirmations();
+      result = { success: true };
+
+    } else if (action === "deleteConfirmation") {
+      deleteConfirmation(body.familyId);
+      result = { success: true };
+
     } else {
       result = { error: "Acción no válida" };
     }
@@ -127,6 +135,45 @@ function saveConfirmation(data) {
     data.email      || "",
     new Date().toISOString(),
   ]);
+
+  // Notificación por correo
+  try {
+    const guests = data.guestCount === 1 ? "1 persona" : (data.guestCount + " personas");
+    MailApp.sendEmail({
+      to: "camilomarquez1988@gmail.com",
+      subject: "🎉 Nueva confirmación — " + (data.familyName || "Invitado"),
+      body: [
+        "¡Hola Camilo!",
+        "",
+        "Se acaba de confirmar una asistencia:",
+        "",
+        "  Familia:   " + (data.familyName || "—"),
+        "  Personas:  " + guests,
+        "  Teléfono:  " + (data.phone || "—"),
+        "  Correo:    " + (data.email  || "—"),
+        "",
+        "Ver todas las confirmaciones en el panel de admin.",
+        "",
+        "— Sistema de Confirmaciones Camilo & Daniela 🌿",
+      ].join("\n"),
+    });
+  } catch (mailErr) {
+    // Si falla el correo no bloqueamos la confirmación
+    Logger.log("Error enviando correo: " + mailErr.message);
+  }
+}
+
+function deleteConfirmation(familyId) {
+  ensureSheet(SHEET_CONFIRMATIONS, ["familyId","familyName","guestCount","phone","email","timestamp"]);
+  const sheet = SS.getSheetByName(SHEET_CONFIRMATIONS);
+  const data  = sheet.getDataRange().getValues();
+  // Recorremos de abajo hacia arriba para no desplazar índices al eliminar
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(familyId)) {
+      sheet.deleteRow(i + 1); // +1 porque getValues es 0-based, Sheets es 1-based
+      break;
+    }
+  }
 }
 
 function uploadGroups(groups) {
@@ -142,6 +189,14 @@ function uploadGroups(groups) {
   groups.forEach(g => {
     sheet.appendRow([g.id, g.name, g.maxGuests]);
   });
+}
+
+function resetConfirmations() {
+  ensureSheet(SHEET_CONFIRMATIONS, ["familyId","familyName","guestCount","phone","email","timestamp"]);
+  const sheet = SS.getSheetByName(SHEET_CONFIRMATIONS);
+  if (sheet.getLastRow() > 1) {
+    sheet.deleteRows(2, sheet.getLastRow() - 1);
+  }
 }
 
 // Crea la hoja si no existe y pone el encabezado
