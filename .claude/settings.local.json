@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E '\\\\.\\(css|html|js|jsx|ts|tsx|vue|svelte\\)$')",
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(export DISPLAY=:99)",
+      "Bash(Xvfb :99 -screen 0 1280x900x24)",
+      "Bash(sleep 2)",
+      "Bash(echo \"Xvfb ready\")",
+      "Bash(npx playwright *)",
+      "Bash(mkdir -p /tmp/pw-test)",
+      "Read(//tmp/**)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(curl -s http://localhost:5175/)",
+      "Bash(convert --version)",
+      "Bash(ffmpeg -version)",
+      "Bash(node -e ' *)",
+      "Bash(npx sharp-cli *)",
+      "Bash(node *)",
+      "Bash(npm list *)",
+      "Bash(netlify status *)",
+      "Bash(netlify sites:list)",
+      "Bash(netlify deploy *)"
+    ]
+  }
+}

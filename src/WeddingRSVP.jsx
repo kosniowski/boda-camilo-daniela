@@ -1273,10 +1273,12 @@ const AdminDashboard = ({ onLogout }) => {
   const handleDelete = async (familyId) => {
     try {
       const result = await api.deleteConfirmation(familyId);
-      if (result?.success === false) throw new Error("server error");
+      if (result?.error || result?.success === false) {
+        throw new Error(result?.error || "error del servidor");
+      }
       setConfirmations(prev => prev.filter(c => c.familyId !== familyId));
-    } catch {
-      alert("No se pudo eliminar. Verifica que el Apps Script esté actualizado.");
+    } catch (e) {
+      alert("No se pudo eliminar en Sheets: " + e.message);
     }
     setDeletingId(null);
   };
