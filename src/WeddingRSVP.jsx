@@ -20,7 +20,7 @@ const WEDDING = {
   time: "11:30 AM",
   venue: "Santuario Juan Pablo Segundo",
   address: "Cra 93 # 45-58, Valle del Lili",
-  venueReception: "Cra 98 # 48-38 Conjunto San Rafael, Valle del Lili — 2:00 PM",
+  venueReception: "Cra 98 # 48-38 Conjunto San Rafael, Valle del Lili — 1:00 PM",
   dressCode: "Hombres: Guayabera · Mujeres: Vestido de cóctel (no blancos ni perlados)",
   mapsChurch:     "https://maps.google.com/?q=Santuario+Juan+Pablo+Segundo+Cra+93+45+58+Valle+del+Lili+Cali",
   mapsReception:  "https://maps.google.com/?q=Cra+98+48-38+Conjunto+San+Rafael+Valle+del+Lili+Cali",
